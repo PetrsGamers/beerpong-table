@@ -37,7 +37,7 @@ export default function CreateTeam(id: { id: number }) {
   }
 
   return (
-    <div className="min-h-screen p-8 pb-20 sm:p-20 font-sans">
+    <div className="p-8 pb-20 sm:p-20 font-sans">
       <main className="flex flex-col gap-8 items-center sm:items-start max-w-md mx-auto">
         <h1 className="text-2xl font-bold mb-4">Zadej jméno týmu</h1>
         <p className="text-center">Počet týmů: {teamCount}</p>

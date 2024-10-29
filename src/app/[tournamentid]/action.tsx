@@ -2,6 +2,7 @@
 
 import { match, player, team, tournament } from "@/db/schema";
 import { eq } from "drizzle-orm"; // Replace "some-library" with the actual library name
+import { revalidatePath } from "next/cache";
 import { db } from "../../db";
 
 export async function checkMatches(id: number) {
@@ -36,12 +37,12 @@ export async function createTeam(formData: FormData) {
   const player2 = formData.get("player2") as string;
   const tournamentId = formData.get("tournamentId");
   if (!teamName || !player1 || !player2) {
-    return { error: "All fields are required" };
+    return { error: "Zadej všechny údaje o týmu" };
   }
 
   const teamExist = await db.select().from(team).where(eq(team.name, teamName));
   if (teamExist.length !== 0) {
-    return { error: "Tym existuje" };
+    return { error: "Tym existuje" + teamName };
   }
 
   let TeamId;
@@ -81,6 +82,7 @@ export async function createTeam(formData: FormData) {
   } catch (error) {
     return { error: "Failed to create players" + error };
   }
+  revalidatePath("/" + tournamentId);
 
   return { success: "Tým " + teamName + " byl vytvořen" };
 }
