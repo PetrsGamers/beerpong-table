@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { match } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export const createNewMatch = async (
   tournamentId: number,
@@ -13,4 +14,12 @@ export const createNewMatch = async (
     team1_id: team1Id,
     team2_id: team2Id,
   });
+};
+
+export const getMatchesForTournament = async (tournamentId: number) => {
+  const matches = await db
+    .select()
+    .from(match)
+    .where(eq(match.tournament_id, tournamentId));
+  return matches;
 };

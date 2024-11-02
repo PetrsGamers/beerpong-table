@@ -5,7 +5,7 @@ interface Player {
   id: number;
   name: string;
   score: number | null;
-  blowjobs: number | null; // This is based on the field in your data
+  blowjobs: number | null;
 }
 
 interface Team {

@@ -1,5 +1,5 @@
 "use server";
-import { getTeamsForTournament } from "@/app/server-actions/teams";
+import { getTeamsForTournament } from "@/actions/teams";
 import { ScoreInputTable } from "@/components/score_input_table";
 
 export default async function Home(params: {

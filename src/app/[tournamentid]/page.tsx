@@ -1,4 +1,5 @@
 "use server";
+import AddNewMatchButton from "@/components/addNewMatchButton";
 import CreateTeam from "@/components/createTeam";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
 import { checkMatches, loadTournament } from "./action";
@@ -53,6 +54,9 @@ export default async function Home(params: {
               <TournamentTeamTable id={matches.id} />
             </div>
           </main>
+          <div className="fixed bottom-8 right-8">
+            <AddNewMatchButton id={tournament.id} />
+          </div>
         </div>
       )}
     </>

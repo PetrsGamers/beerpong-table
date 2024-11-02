@@ -1,6 +1,6 @@
 "use server";
 
-import { getTeamsForTournament } from "@/app/server-actions/teams";
+import { getTeamsForTournament } from "@/actions/teams";
 
 export default async function Home(params: {
   params: { tournamentid: number };

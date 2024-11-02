@@ -1,11 +1,11 @@
 "use client";
-import { Team } from "@/types/team";
-import { TableInput } from "./table_input";
-import { useState } from "react";
-import { PlayerCouple } from "@/types/player";
-import { getPlayersForTeamId } from "@/app/server-actions/players";
-import { createNewMatch } from "@/app/server-actions/matches";
+import { createNewMatch } from "@/actions/matches";
+import { getPlayersForTeamId } from "@/actions/players";
 import { useToast } from "@/hooks/use-toast";
+import { PlayerCouple } from "@/types/player";
+import { Team } from "@/types/team";
+import { useState } from "react";
+import { TableInput } from "./table_input";
 
 export const ScoreInputTable = (props: {
   teams: Team[];
