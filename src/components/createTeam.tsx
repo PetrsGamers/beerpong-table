@@ -24,7 +24,7 @@ export default function CreateTeam(id: { id: number }) {
     const formData = new FormData(event.currentTarget);
     formData.append("tournamentId", id.id.toString());
     const result = await createTeam(formData);
-    const teamCount = await findTeamCount(id.id); ///TODO: implement findTeamCount
+    const teamCount = await findTeamCount(id.id);
     if (result.error) {
       setMessage(result.error);
     } else if (result.success) {
