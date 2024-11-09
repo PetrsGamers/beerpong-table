@@ -1,6 +1,6 @@
 "use server";
 import { loadAllTeams } from "@/actions/teams";
-
+import DeleteTeamButton from "@/components/deleteTeamButton";
 interface Player {
   id: number;
   name: string;
@@ -40,6 +40,7 @@ export default async function TournamentTeamTable(id: { id: number }) {
               <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Player 2
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody className="bg-black divide-y divide-gray-200">
@@ -53,6 +54,9 @@ export default async function TournamentTeamTable(id: { id: number }) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {data.player2?.name || "N/A"}
+                </td>
+                <td>
+                  <DeleteTeamButton id={data.team.id} />
                 </td>
               </tr>
             ))}

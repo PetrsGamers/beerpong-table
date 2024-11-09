@@ -2,6 +2,7 @@
 import { db } from "@/db";
 import { player, team } from "@/db/schema";
 import { aliasedTable, eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 export async function loadAllTeams(id: number) {
     const player1 = aliasedTable(player, "player1");
     const player2 = aliasedTable(player, "player2");
@@ -16,8 +17,8 @@ export async function loadAllTeams(id: number) {
 }
 
 export async function deleteTeam(id: number) {
-    const result = await db.delete(team).where(eq(team.id, id));
-    return result;
+    const tournamentId = await db.delete(team).where(eq(team.id, id)).returning({ deletedId: team.tournament_id });
+    redirect("/" + tournamentId[0].deletedId);
     }
 
 export const getTeamsForTournament = async (tournamentId: number) => {
