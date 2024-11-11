@@ -2,6 +2,7 @@
 import AddNewMatchButton from "@/components/addNewMatchButton";
 import CreateTeam from "@/components/createTeam";
 import { MatchesOverViewTable } from "@/components/matchesOverviewTable";
+import StatsTournamentButton from "@/components/statsTournamentBUtton";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
 import { loadMatches, loadTournament } from "./action";
 
@@ -35,6 +36,9 @@ export default async function Home(params: {
         </main>
         <div className="fixed bottom-8 right-8">
           <AddNewMatchButton id={tournament.id} />
+        </div>
+        <div className="fixed left-8 right-8">
+          <StatsTournamentButton id={tournament.id} />
         </div>
       </div>
     </>
