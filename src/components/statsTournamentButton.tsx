@@ -13,7 +13,7 @@ function StatsTournamentButton({ id }: Props) {
   };
 
   return (
-    <button onClick={handleClick} className="btn btn-primary">
+    <button onClick={handleClick} className="btn btn-secondary">
       Statistiky turnaje
     </button>
   );

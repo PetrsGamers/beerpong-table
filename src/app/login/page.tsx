@@ -11,7 +11,7 @@ export default async function Page() {
       <div className="flex justify-center">
         <div className="flex flex-col items-center">
           <p className="m-4">
-            You're logged in as user id #{String(session?.userId)}.
+            You&apos;re logged in as user id #{String(session?.userId)}.
           </p>
           <form action={logout}>
             <button type="submit" className="btn">

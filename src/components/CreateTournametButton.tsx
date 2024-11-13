@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-function createTournamentButton() {
+function CreateTournamentButton() {
   const router = useRouter();
 
   const handleClick = () => {
@@ -15,4 +15,4 @@ function createTournamentButton() {
   );
 }
 
-export default createTournamentButton;
+export default CreateTournamentButton;

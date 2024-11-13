@@ -15,17 +15,22 @@ export async function loadAllTeams(id: number) {
 
     console.log("id", id);
     const teams = await db
-    .select()
-    .from(team)
-    .leftJoin(player1, eq(team.player1_id, player1.id))    .leftJoin(player2, eq(team.player2_id, player2.id)).where(eq(team.tournament_id, id));
+        .select({
+            teamId: team.id,
+            teamName: team.name,
+            player1Id: player1.id,
+            player1Name: player1.name,
+            player2Id: player2.id,
+            player2Name: player2.name,
+        })
+        .from(team)
+        .leftJoin(player1, eq(team.player1_id, player1.id))
+        .leftJoin(player2, eq(team.player2_id, player2.id))
+        .where(eq(team.tournament_id, id));
 
   return teams;
 }
 
-export async function deleteTeam(id: number) {
-    const tournamentId = await db.delete(team).where(eq(team.id, id)).returning({ deletedId: team.tournament_id });
-    redirect("/" + tournamentId[0].deletedId);
-    }
 
 export const getTeamsForTournament = async (tournamentId: number) => {
     const teams = await db
@@ -88,4 +93,8 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
   
     return teamList.sort((a, b) => b.score - a.score);
 }   
-      
+     
+export const deleteTeam = async (teamId: number) => {   
+    const tournament_id = await db.delete(team).where(eq(team.id, teamId)).returning({tournamentid: team.tournament_id});
+    redirect("/"+tournament_id[0].tournamentid);
+}

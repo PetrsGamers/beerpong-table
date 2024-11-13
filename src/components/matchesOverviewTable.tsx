@@ -2,20 +2,33 @@
 import { deleteMatch } from "@/actions/matches";
 import React from "react";
 
-interface MatchWithTeams {
+export interface MatchWithTeams {
   match: {
     id: number;
-    score: string;
+    score: string | null;
+    tournament_id: number | null;
+    team1_id: number | null;
+    team2_id: number | null;
   };
   team1: {
-    name: string;
-  };
+    id: number;
+    name: string | null;
+    score: string | null;
+    player1_id: number | null;
+    player2_id: number | null;
+    tournament_id: number | null;
+  } | null;
   team2: {
-    name: string;
-  };
+    id: number;
+    name: string | null;
+    score: string | null;
+    player1_id: number | null;
+    player2_id: number | null;
+    tournament_id: number | null;
+  } | null;
 }
 
-interface MatchesOverViewTableProps {
+export interface MatchesOverViewTableProps {
   matches: MatchWithTeams[];
 }
 
@@ -39,19 +52,21 @@ export const MatchesOverViewTable: React.FC<MatchesOverViewTableProps> = ({
             <th></th>
           </tr>
         </thead>
-        <tbody className="bg-black divide-y divide-gray-200">
-          {matches.map((data: MatchWithTeams) => (
-            <tr key={data.match.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{data.team1.name}</td>
+        <tbody>
+          {matches.map((match) => (
+            <tr key={match.match.id}>
               <td className="px-6 py-4 whitespace-nowrap">
-                {data.match.score || "N/A"}
+                {match.team1?.name || "N/A"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {data.team2.name || "N/A"}
+                {match.match.score || "N/A"}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {match.team2?.name || "N/A"}
               </td>
               <td className="text-center">
                 <button
-                  onClick={() => deleteMatch(data.match.id)}
+                  onClick={() => deleteMatch(match.match.id)}
                   className="text-red-600 hover:text-red-900 flex items-center justify-center w-full"
                 >
                   <svg

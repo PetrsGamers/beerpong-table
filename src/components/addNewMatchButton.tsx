@@ -5,7 +5,7 @@ interface Props {
   id: number;
 }
 
-function addNewMatchButton({ id }: Props) {
+function AddNewMatchButton({ id }: Props) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -19,4 +19,4 @@ function addNewMatchButton({ id }: Props) {
   );
 }
 
-export default addNewMatchButton;
+export default AddNewMatchButton;

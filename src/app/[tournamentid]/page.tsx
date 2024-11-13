@@ -2,7 +2,7 @@
 import AddNewMatchButton from "@/components/addNewMatchButton";
 import CreateTeam from "@/components/createTeam";
 import { MatchesOverViewTable } from "@/components/matchesOverviewTable";
-import StatsTournamentButton from "@/components/statsTournamentBUtton";
+import StatsTournamentButton from "@/components/statsTournamentButton";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
 import { loadMatches, loadTournament } from "./action";
 
@@ -11,12 +11,15 @@ export default async function Home(params: {
 }) {
   const matches = await loadMatches(params.params.tournamentid);
   const tournament = await loadTournament(params.params.tournamentid);
+
   return (
     <>
-      ID TURNAJE :{tournament.id}
-      JMENO TURNAJE: {tournament.name}
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <main className="grid grid-cols-1 sm:grid-cols-2 gap-8 row-start-2 items-start">
+      {/* <div className="flex flex-col gap-2 mb-4">
+        <div>ID TURNAJE: {tournament.id}</div>
+        <div>JMENO TURNAJE: {tournament.name}</div>
+      </div> */}
+      <div className="grid grid-rows-[1fr_auto] min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <main className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
           {matches ? (
             <MatchesOverViewTable matches={matches} />
           ) : (
@@ -34,11 +37,9 @@ export default async function Home(params: {
             </>
           )}
         </main>
-        <div className="fixed bottom-8 right-8">
-          <AddNewMatchButton id={tournament.id} />
-        </div>
-        <div className="fixed left-8 right-8">
+        <div className="flex justify-between items-center px-8 py-4">
           <StatsTournamentButton id={tournament.id} />
+          <AddNewMatchButton id={tournament.id} />
         </div>
       </div>
     </>

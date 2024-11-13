@@ -1,5 +1,3 @@
-import { ReactElement, ReactHTMLElement } from "react";
-
 export const TableInput = (props: any) => (
   <td>
     <input

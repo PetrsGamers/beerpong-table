@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { team, tournament } from "@/db/schema";
+import { team } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export const getTeamsForTournament = async (tournamentId: number) => {

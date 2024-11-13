@@ -1,29 +1,18 @@
 "use server";
 import { loadAllTeams } from "@/actions/teams";
 import DeleteTeamButton from "@/components/deleteTeamButton";
-interface Player {
-  id: number;
-  name: string;
-  score: number | null;
-  blowjobs: number | null;
+
+interface TeamData {
+  teamId: number;
+  teamName: string | null;
+  player1Id: number | null;
+  player1Name: string | null;
+  player2Id: number | null;
+  player2Name: string | null;
 }
 
-interface Team {
-  id: number;
-  name: string;
-  score: number | null;
-  player1_id: number;
-  player2_id: number;
-  tournament_id: number;
-}
-
-interface TeamWithPlayers {
-  team: Team;
-  player1: Player | null;
-  player2: Player | null;
-}
 export default async function TournamentTeamTable(id: { id: number }) {
-  const tournamentTeamData = await loadAllTeams(id.id);
+  const tournamentTeamData: TeamData[] = await loadAllTeams(id.id);
   console.log(tournamentTeamData);
   return (
     <>
@@ -44,25 +33,26 @@ export default async function TournamentTeamTable(id: { id: number }) {
             </tr>
           </thead>
           <tbody className="bg-black divide-y divide-gray-200">
-            {tournamentTeamData.map((data: TeamWithPlayers) => (
-              <tr key={data.team.id}>
+            {tournamentTeamData.map((data: TeamData) => (
+              <tr key={data.teamId}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {data.team.name}
+                  {data.teamName || "N/A"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {data.player1?.name || "N/A"}
+                  {data.player1Name || "N/A"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {data.player2?.name || "N/A"}
+                  {data.player2Name || "N/A"}
                 </td>
                 <td>
-                  <DeleteTeamButton id={data.team.id} />
+                  <DeleteTeamButton id={data.teamId} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <div className="text-right">Počet týmů {tournamentTeamData.length}</div>
     </>
   );
 }
