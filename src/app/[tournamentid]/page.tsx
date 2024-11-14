@@ -12,7 +12,15 @@ export default async function Home(params: {
   const matches: MatchWithTeams[] | null = await loadMatches(
     params.params.tournamentid
   );
+  if (isNaN(params.params.tournamentid)) {
+    return <div>Invalid tournament ID</div>;
+  }
+
   const tournament = await loadTournament(params.params.tournamentid);
+
+  if (!tournament?.id) {
+    return <div>Tournament not found</div>;
+  }
 
   return (
     <>
@@ -20,6 +28,7 @@ export default async function Home(params: {
         <div>ID TURNAJE: {tournament.id}</div>
         <div>JMENO TURNAJE: {tournament.name}</div>
       </div> */}
+
       <div className="grid grid-rows-[1fr_auto] min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <main className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
           {matches ? (

@@ -3,7 +3,6 @@ import { db } from "@/db";
 import { match, player, team } from "@/db/schema";
 import { aliasedTable, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 type Team = {
   id: number;
@@ -48,10 +47,12 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
 
   for (const match of matches) {
     const scores = match.score?.split(":");
+    console.log("scores", scores);
     if (scores === undefined) {
+      console.log("scores undefined");
       continue;
     }
-    if (scores[0] > scores[1]) {
+    if (Number(scores[0]) > Number(scores[1])) {
       const team1 = teamList.find((team) => team.id === match.team1_id);
       if (team1) {
         team1.score += 2;
@@ -78,6 +79,37 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
         teamList.push({
           id: match.team2_id,
           score: 0,
+          name: teamName[0].name ?? "",
+        });
+      }
+    }
+    if (Number(scores[0]) < Number(scores[1])) {
+      const team1 = teamList.find((team) => team.id === match.team1_id);
+      if (team1) {
+        team1.score += 0;
+      } else if (match.team1_id !== null) {
+        const teamName = await db
+          .select()
+          .from(team)
+          .where(eq(team.id, match.team1_id));
+        teamList.push({
+          id: match.team1_id,
+          score: 0,
+          name: teamName[0].name ?? "",
+        });
+      }
+
+      const team2 = teamList.find((team) => team.id === match.team2_id);
+      if (team2) {
+        team2.score += 2;
+      } else if (match.team2_id !== null) {
+        const teamName = await db
+          .select()
+          .from(team)
+          .where(eq(team.id, match.team2_id));
+        teamList.push({
+          id: match.team2_id,
+          score: 2,
           name: teamName[0].name ?? "",
         });
       }
@@ -113,7 +145,11 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
         });
       }
     }
+    else{
+
+    }
   }
+  console.log("teamList", teamList);
 
   return teamList.sort((a, b) => b.score - a.score);
 };
