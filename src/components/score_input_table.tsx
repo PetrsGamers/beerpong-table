@@ -1,12 +1,12 @@
 "use client";
-import { Team } from "@/types/team";
-import { TableInput } from "./table_input";
-import { useRef, useState } from "react";
-import { PlayerCouple } from "@/types/player";
-import { useToast } from "@/hooks/use-toast";
-import { SubmitDialog } from "./submit_dialog";
-import { addPlayerScoreAndBJ, getPlayersForTeamId } from "@/actions/players";
 import { createNewMatch } from "@/actions/matches";
+import { addPlayerScoreAndBJ, getPlayersForTeamId } from "@/actions/players";
+import { useToast } from "@/hooks/use-toast";
+import { PlayerCouple } from "@/types/player";
+import { Team } from "@/types/team";
+import { useRef, useState } from "react";
+import { SubmitDialog } from "./submit_dialog";
+import { TableInput } from "./table_input";
 
 export const ScoreInputTable = (props: {
   teams: Team[];
@@ -144,7 +144,7 @@ export const ScoreInputTable = (props: {
 
   return (
     <div className="overflow-x-auto">
-      <div>{JSON.stringify(props.teams)}</div>
+      {/* <div>{JSON.stringify(props.teams)}</div> */}
       <form ref={formRef} onSubmit={handleSubmit}>
         <table className="min-w-full border-collapse table-auto text-center">
           <thead className="bg-gray-800">
@@ -170,7 +170,7 @@ export const ScoreInputTable = (props: {
                 Skóre
               </th>
               <th colSpan={2} className="py-2 px-4 border-b">
-                Tým 2:
+                Tým 2: &nbsp;
                 <select
                   onChange={(e) => {
                     console.log("changed, yo:", e.target.value);
@@ -198,15 +198,15 @@ export const ScoreInputTable = (props: {
               <td className="py-2 px-4 border-b">BJ</td>
               <td className="py-2 px-4 border-b text-nowrap">Hráč 1</td>
             </tr>
-            <tr className="bg-gray-400">
-              <td className="py-2 px-4 border-b">
+            <tr className="bg-gray-300">
+              <td className="py-2 px-4 border-b text-black font-bold">
                 {team1Players.player1?.name}
               </td>
               <TableInput name="team1player1BJ" />
               <TableInput name="team1player1score" />
               <TableInput name="team2player1score" />
               <TableInput name="team2player1BJ" />
-              <td className="py-2 px-4 border-b">
+              <td className="py-2 px-4 border-b text-black font-bold">
                 {team2Players.player1?.name}
               </td>
             </tr>
@@ -219,21 +219,21 @@ export const ScoreInputTable = (props: {
               <td className="py-2 px-4 border-b"></td>
               <td className="py-2 px-4 border-b text-nowrap">Hráč 2</td>
             </tr>
-            <tr className="bg-gray-400">
-              <td className="py-2 px-4 border-b">
+            <tr className="bg-gray-300 text-white">
+              <td className="py-2 px-4 border-b text-black font-bold ">
                 {team1Players.player2?.name}
               </td>
               <TableInput name="team1player2BJ" />
               <TableInput name="team1player2score" />
               <TableInput name="team2player2score" />
               <TableInput name="team2player2BJ" />
-              <td className="py-2 px-4 border-b">
+              <td className="py-2 px-4 border-b text-black font-bold">
                 {team2Players.player2?.name}
               </td>
             </tr>
           </tbody>
         </table>
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end w-full mt-2">
           <SubmitDialog
             handleModalConfirm={handleModalConfirm}
             description={`Team ${team1?.name} : Team ${team2?.name}`}

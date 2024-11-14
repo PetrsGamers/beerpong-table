@@ -9,21 +9,24 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 export function SubmitDialog({ handleModalConfirm, description }: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Show Dialog</Button>
+        <button className="btn btn-primary">Submit</button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogContent className="bg-white">
+        <AlertDialogHeader className="bg-white">
+          <AlertDialogTitle className="text-black font-bold">
+            Are you sure?
+          </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="btn btn-secondary">
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction>
             <button onClick={(e) => handleModalConfirm(e)}>Submit Match</button>
           </AlertDialogAction>
