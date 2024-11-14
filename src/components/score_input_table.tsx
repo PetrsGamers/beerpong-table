@@ -150,7 +150,7 @@ export const ScoreInputTable = (props: {
           <thead className="bg-gray-800">
             <tr>
               <th colSpan={2} className="py-2 px-4 border-b">
-                Tým 1:
+                Tým 1: &nbsp;:
                 <select
                   onChange={(e) => {
                     console.log("changed, yo:", e.target.value);
