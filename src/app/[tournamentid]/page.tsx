@@ -30,6 +30,10 @@ export default async function Home(params: {
       </div> */}
 
       <div className="grid grid-rows-[1fr_auto] min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="flex justify-between items-center px-8 py-4">
+          <StatsTournamentButton id={params.params.tournamentid} />
+          <AddNewMatchButton id={params.params.tournamentid} />
+        </div>
         <main className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
           {matches ? (
             <>
@@ -50,10 +54,6 @@ export default async function Home(params: {
             </>
           )}
         </main>
-        <div className="flex justify-between items-center px-8 py-4">
-          <StatsTournamentButton id={params.params.tournamentid} />
-          <AddNewMatchButton id={params.params.tournamentid} />
-        </div>
       </div>
     </>
   );
