@@ -10,44 +10,49 @@ export const MatchesOverViewTable: React.FC<MatchesOverViewTableProps> = ({
   matches,
 }) => {
   return (
-    <>
+    <div className="overflow-x-auto rounded-lg shadow">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-black">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
               Team Name
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
               Score
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
               Team Name
             </th>
-            <th></th>
+            <th className="px-6 py-4 w-20"></th>
           </tr>
         </thead>
-        <tbody>
-          {matches.map((match) => (
-            <tr key={match.match.id}>
-              <td className="px-6 py-4 whitespace-nowrap">
+        <tbody className="bg-black divide-y divide-gray-200">
+          {matches.map((match, index) => (
+            <tr
+              key={match.match.id}
+              className={`${
+                index % 2 === 0 ? "bg-black" : "bg-gray-900"
+              } hover:bg-gray-700 transition-colors duration-200`}
+            >
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white-900">
                 {match.team1?.name || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-white-600 font-semibold">
                 {match.match.score || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white-900">
                 {match.team2?.name || "N/A"}
               </td>
-              <td className="text-center">
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                 <button
                   onClick={() => deleteMatch(match.match.id)}
-                  className="text-red-600 hover:text-red-900 flex items-center justify-center w-full"
+                  className="text-red-500 hover:text-red-700 transition-colors duration-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-5 w-5"
                     viewBox="0 0 24 24"
-                    fill="red"
+                    fill="currentColor"
                   >
                     <path
                       fillRule="evenodd"
@@ -61,6 +66,6 @@ export const MatchesOverViewTable: React.FC<MatchesOverViewTableProps> = ({
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
