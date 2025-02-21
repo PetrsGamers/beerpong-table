@@ -151,7 +151,35 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
   }
   console.log("teamList", teamList);
 
-  return teamList.sort((a, b) => b.score - a.score);
+  return teamList.sort((a, b) => {
+    // First compare by points
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    
+    // If points are equal, check head-to-head matches
+    const headToHead = matches.filter(match => 
+      (match.team1_id === a.id && match.team2_id === b.id) ||
+      (match.team1_id === b.id && match.team2_id === a.id)
+    );
+
+    for (const match of headToHead) {
+      const scores = match.score?.split(":");
+      if (!scores) continue;
+      
+      const [score1, score2] = scores.map(Number);
+      if (match.team1_id === a.id) {
+        if (score1 > score2) return -1;
+        if (score1 < score2) return 1;
+      } else {
+        if (score2 > score1) return -1;
+        if (score2 < score1) return 1;
+      }
+    }
+
+    // If still tied, keep original order
+    return 0;
+  });
 };
 
 // export const deleteTeam = async (teamId: number) => {
