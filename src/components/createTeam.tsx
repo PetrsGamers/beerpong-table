@@ -1,6 +1,7 @@
 "use client";
 
 import { createTeam, findTeamCount } from "@/app/[tournamentid]/action";
+import { toast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
 export default function CreateTeam(id: { id: number }) {
@@ -27,8 +28,20 @@ export default function CreateTeam(id: { id: number }) {
     const teamCount = await findTeamCount(id.id);
     if (result.error) {
       setMessage(result.error);
+      toast({
+        title: "Jujky chyba",
+        description: result.error,
+        duration: 2000,
+        color: "red",
+      });
     } else if (result.success) {
       setMessage(result.success);
+      toast({
+        title: "Team " + teamName + " created successfully",
+        description: "Dobrá práce, kámobráško",
+        duration: 2000,
+        color: "green",
+      });
       setTeamName("");
       setPlayer1("");
       setPlayer2("");
