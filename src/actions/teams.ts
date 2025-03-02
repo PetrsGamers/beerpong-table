@@ -150,14 +150,13 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
     }
   }
   console.log("teamList", teamList);
-
+  //sort by score and then by head to head, if points are equal
   return teamList.sort((a, b) => {
-    // First compare by points
+
     if (b.score !== a.score) {
       return b.score - a.score;
     }
     
-    // If points are equal, check head-to-head matches
     const headToHead = matches.filter(match => 
       (match.team1_id === a.id && match.team2_id === b.id) ||
       (match.team1_id === b.id && match.team2_id === a.id)
@@ -177,7 +176,6 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
       }
     }
 
-    // If still tied, keep original order
     return 0;
   });
 };
