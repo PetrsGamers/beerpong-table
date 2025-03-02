@@ -24,8 +24,13 @@ export default async function Home(params: {
     return <div>Tournament not found</div>;
   }
 
+  if (!tournament?.id) {
+    return <div>Tournament not found</div>;
+  }
+
   return (
     <>
+
       <div className="min-h-screen bg-black text-white">
         {/* Tournament Header */}
         <div className="border-b border-gray-800">

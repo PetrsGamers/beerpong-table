@@ -176,6 +176,7 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
       }
     }
 
+
     return 0;
   });
 };
