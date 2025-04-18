@@ -3,9 +3,10 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   id: number;
+  matches?: any[]; // Add matches prop to check if any exist
 }
 
-function AddNewMatchButton({ id }: Props) {
+function AddNewMatchButton({ id, matches }: Props) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -14,7 +15,7 @@ function AddNewMatchButton({ id }: Props) {
 
   return (
     <button onClick={handleClick} className="btn btn-primary">
-      Start the tournament
+      {matches && matches.length > 0 ? "Add match" : "Start the tournament"}
     </button>
   );
 }
