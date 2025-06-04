@@ -150,8 +150,45 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
     }
   }
   console.log("teamList", teamList);
+  //sort by score and then by head to head, if points are equal
+  return teamList.sort((a, b) => {
+    // First compare total tournament points
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    
+    // Find all head-to-head matches between teams A and B
+    const headToHead = matches.filter(match => 
+      (match.team1_id === a.id && match.team2_id === b.id) ||
+      (match.team1_id === b.id && match.team2_id === a.id)
+    );
 
-  return teamList.sort((a, b) => b.score - a.score);
+    // Calculate aggregate head-to-head score
+    let teamAScore = 0;
+    let teamBScore = 0;
+
+    // Sum up all head-to-head matches
+    headToHead.forEach(match => {
+      const scores = match.score?.split(":");
+      if (!scores) return;
+      
+      const [score1, score2] = scores.map(Number);
+      if (match.team1_id === a.id) {
+        teamAScore += score1;
+        teamBScore += score2;
+      } else {
+        teamAScore += score2;
+        teamBScore += score1;
+      }
+    });
+
+    // Compare aggregate scores
+    if (teamAScore > teamBScore) return -1;
+    if (teamAScore < teamBScore) return 1;
+    
+    // If head-to-head is also equal, return 0 (maintain original order)
+    return 0;
+  });
 };
 
 // export const deleteTeam = async (teamId: number) => {

@@ -21,47 +21,53 @@ export default async function TournamentTeamTable(id: { id: number }) {
     player2Id: item.team.player2_id,
     player2Name: item.player2?.name || null,
   }));
-  console.log(tournamentTeamData);
+
   return (
     <>
-      {tournamentTeamData && (
+      <div className="overflow-x-auto rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-black">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
                 Team Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
                 Player 1
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
                 Player 2
               </th>
-              <th></th>
+              <th className="px-6 py-4 w-20"></th>
             </tr>
           </thead>
           <tbody className="bg-black divide-y divide-gray-200">
-            {tournamentTeamData.map((data: TeamData) => (
-              <tr key={data.teamId}>
-                <td className="px-6 py-4 whitespace-nowrap">
+            {tournamentTeamData.map((data: TeamData, index) => (
+              <tr
+                key={data.teamId}
+                className={`${
+                  index % 2 === 0 ? "bg-black" : "bg-gray-900"
+                } hover:bg-gray-700 transition-colors duration-200`}
+              >
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white-900">
                   {data.teamName || "N/A"}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white-900">
                   {data.player1Name || "N/A"}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white-900">
                   {data.player2Name || "N/A"}
                 </td>
-                <td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                   <DeleteTeamButton id={data.teamId} />
                 </td>
-                <td>{/* <DeleteButton id={data.team.id} /> */}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-      <div className="text-right">Počet týmů {tournamentTeamData.length}</div>
+      </div>
+      <div className="text-right mt-4 text-sm text-gray-100">
+        Počet týmů {tournamentTeamData.length}
+      </div>
     </>
   );
 }
