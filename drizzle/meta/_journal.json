@@ -8,6 +8,13 @@
       "when": 1729979322218,
       "tag": "0000_black_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751148771986,
+      "tag": "0001_wise_guardsmen",
+      "breakpoints": true
     }
   ]
 }

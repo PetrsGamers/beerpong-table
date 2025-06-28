@@ -10,6 +10,10 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate"
   },
+  "scriptsComments": {
+    "generate": "Creates a new SQL migration file with the necessary SQL statements to update the database. Does not apply changes to the database, it only generates the file",
+    "migrate": "Applies the migration files to your actual database."
+  },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.5",
     "@radix-ui/react-alert-dialog": "^1.1.2",
