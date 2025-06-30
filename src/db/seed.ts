@@ -14,6 +14,7 @@ import { db } from ".";
 
 async function seed() {
   console.log("🌱 Starting seed...");
+  console.log(db);
 
   // 1. Players
   const players = Array.from({ length: 10 }, () => ({
