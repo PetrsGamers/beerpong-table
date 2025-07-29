@@ -14,7 +14,6 @@ import { db } from ".";
 
 async function seed() {
   console.log("🌱 Starting seed...");
-  console.log(db);
 
   // 1. Players
   const players = Array.from({ length: 10 }, () => ({
@@ -96,6 +95,7 @@ async function seed() {
   console.log("✅ Seed complete");
 }
 
+console.log("Starting script...");
 seed().catch((e) => {
   console.error("❌ Seed error:", e);
   process.exit(1);
