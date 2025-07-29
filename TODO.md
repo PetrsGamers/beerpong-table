@@ -4,7 +4,10 @@
 
 - finish new db schema
 - add db seeding and helper scripts
-- add new screens -
+- come up with generic CRUD components
+  => season, tournament, matches are basically the same thing (teams and players too)
+  => CRUD table with onEdit dialog and addNewItem dialog and button and generic onRemove
+- add new screens - check end of file for list of screens
 
 ## version 2 upgrades
 
@@ -26,11 +29,11 @@
 
 - list of seasons - CRUD (can start a new season, edit and delete)
 
-## /seasons/{season_name}
+## /seasons/{seasonId}
 
 - list of tournaments in given season - CRUD (can start a new tournament, edit and delete)
 
-## /seasons/{season_name}/{tournament_name}
+## /seasons/{seasonId}/{tournamentId}
 
 - list of matches in given tournament - CRUD (should already be implemented)
 
