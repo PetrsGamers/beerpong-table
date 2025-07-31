@@ -11,12 +11,22 @@
   => CRUD table with onEdit dialog and addNewItem dialog and button and generic onRemove
 - add new screens - check end of file for list of screens
 
+CRUD components todo:
+
+- finish generic table
+  - make delete and edit work with confirm dialog and edit dialog
+  - add a "create new entry" field for adding new entries
+  - add link so you can click through the table entries
+- finish generic page
+- implement all required pages in order - seasons > tournaments > matches > seasonDetails (teams mgmt) > tournamentDetails (player mgmt?) > matchDetails (table form)
+
 ## version 2 upgrades
 
 - bugfixes and QoL changes from the github issues page
 
 ## Version 2.1
 
+- Data Table in CRUD table with search and filtering (tanstack)
 - CSV / XLSX / pdf export of results
 - public access to dashboard with results
 - in-depth statistics, scores, even for individual players

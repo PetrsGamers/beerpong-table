@@ -28,10 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex flex-col`}
       >
         <Navbar />
-        {children}
+        <div className="container mx-auto p-4 grow">{children}</div>
         <Toaster />
       </body>
     </html>

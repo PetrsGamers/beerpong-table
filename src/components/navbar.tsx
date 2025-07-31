@@ -6,7 +6,7 @@ import Link from "next/link";
 export const Navbar = async () => {
   const session = await getSession();
   return (
-    <div className="navbar sticky top-0 z-50 bg-black">
+    <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-sm">
       <div className="flex-1">
         <a href="/" className="btn btn-ghost text-xl">
           🦊 SPPDF BeerPong
@@ -16,7 +16,7 @@ export const Navbar = async () => {
         <ul className="menu menu-horizontal px-1">
           {session?.userId! && (
             <li>
-              <Link href="/idkyet">Nejaky random link tady </Link>
+              {/* <Link href="/idkyet">Nejaky random link tady </Link> */}
             </li>
           )}
         </ul>
