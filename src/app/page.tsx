@@ -1,20 +1,20 @@
-"use server";
-
+// app/seasons/page.tsx
 import { getAllSeasons } from "@/actions/seasons";
-import DeleteSeasonButton from "@/components/deleteSeasonButton";
+import { CrudPage } from "@/components/CrudPage";
 
-export default async function Home() {
-  const seasons = await getAllSeasons();
+export default function SeasonsPage() {
   return (
-    <div className="h-full">
-      <h1>Seasons</h1>
-      {seasons.map((s) => (
-        <div key={s.id} className="flex gap-8">
-          <a href={`/season/${s.id}`}>{s.name}</a>
-          <p>{String(s.createTime.toLocaleString())}</p>
-          <DeleteSeasonButton id={s.id} />
-        </div>
-      ))}
-    </div>
+    <CrudPage
+      title="Seasons"
+      fetchData={getAllSeasons}
+      columns={[
+        { key: "name", label: "Name" },
+        { key: "createTime", label: "created at" },
+      ]}
+      deleteAction={async (id) => {
+        "use server";
+        await getAllSeasons();
+      }}
+    />
   );
 }

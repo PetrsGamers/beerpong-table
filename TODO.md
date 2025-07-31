@@ -4,6 +4,8 @@
 
 - finish new db schema
 - add db seeding and helper scripts
+- introduce dev branch and merge into it (master stays intact for now)
+- create a v2 tag (?)
 - come up with generic CRUD components
   => season, tournament, matches are basically the same thing (teams and players too)
   => CRUD table with onEdit dialog and addNewItem dialog and button and generic onRemove
