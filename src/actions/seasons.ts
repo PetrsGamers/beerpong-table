@@ -9,11 +9,6 @@ export async function getAllSeasons() {
   return db.select().from(season);
 }
 
-export async function createSeason(name: string) {
-  const newSeason = await db.insert(season).values({ name }).returning();
-  return newSeason[0];
-}
-
 export async function getSeasonById(id: number) {
   const seasonData = await db
     .select()
@@ -23,12 +18,19 @@ export async function getSeasonById(id: number) {
   return seasonData[0];
 }
 
+export async function createSeason(name: string) {
+  const newSeason = await db.insert(season).values({ name }).returning();
+  revalidatePath("/");
+  return newSeason[0];
+}
+
 export async function updateSeason(id: number, name: string) {
   const updatedSeason = await db
     .update(season)
     .set({ name })
     .where(eq(season.id, id))
     .returning();
+  revalidatePath("/");
   return updatedSeason[0];
 }
 

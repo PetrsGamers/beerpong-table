@@ -1,6 +1,6 @@
 // app/seasons/page.tsx
-import { deleteSeason, getAllSeasons } from "@/actions/seasons";
-import { CrudPage } from "@/components/CrudPage";
+import { createSeason, deleteSeason, getAllSeasons } from "@/actions/seasons";
+import { CrudPage } from "@/components/CrudComponents/CrudPage";
 
 export default function SeasonsPage() {
   return (
@@ -8,12 +8,17 @@ export default function SeasonsPage() {
       title="Seasons"
       fetchData={getAllSeasons}
       columns={[
-        { key: "name", label: "Name" },
-        { key: "createTime", label: "created at" },
+        { key: "name", label: "Name", required: true, type: "string" },
+        {
+          key: "createTime",
+          label: "created at",
+          required: false,
+          type: "date",
+        },
       ]}
-      createAction={async () => {
+      createAction={async (formData: { name: string }) => {
         "use server";
-        await getAllSeasons();
+        await createSeason(formData.name);
       }}
       editAction={async (item) => {
         "use server";

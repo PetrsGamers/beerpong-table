@@ -1,10 +1,11 @@
 import { CrudTable } from "./CrudTable";
+import { CrudTableColumn } from "./types";
 
 export type CrudPageProps<T extends { id: string | number }> = {
   title: string;
   fetchData: () => Promise<T[]>;
-  columns: { key: keyof T; label: string }[];
-  createAction?: () => Promise<void>;
+  columns: CrudTableColumn<T>[];
+  createAction?: (item: Partial<T>) => Promise<void>;
   editAction?: (item: T) => Promise<void>;
   deleteAction: (id: string | number) => Promise<void>;
 };

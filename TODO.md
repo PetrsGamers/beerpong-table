@@ -14,8 +14,9 @@
 CRUD components todo:
 
 - finish generic table
-  - make delete and edit work with confirm dialog and edit dialog
+  - make delete confirmation
   - add a "create new entry" field for adding new entries
+  <!-- - obed - voda a kase, blaha cviky -->
   - add link so you can click through the table entries
 - finish generic page
 - implement all required pages in order - seasons > tournaments > matches > seasonDetails (teams mgmt) > tournamentDetails (player mgmt?) > matchDetails (table form)
