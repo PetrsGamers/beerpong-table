@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Input } from "../ui/input";
+import { CrudButtonWithDialog } from "./CrudButtonWithDialog";
 
 interface CrudTableProps<T> {
   data: T[];
@@ -33,7 +34,7 @@ interface CrudTableProps<T> {
   isLoading?: boolean;
 }
 
-export function CrudTable<T extends { id: string | number }>({
+export function CrudTable<T extends { id: number }>({
   data,
   columns,
   onEdit,
@@ -44,7 +45,6 @@ export function CrudTable<T extends { id: string | number }>({
   const [isPending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [addFormData, setAddFormData] = useState<Record<string, any>>({});
-  const [isAdding, setIsAdding] = useState(false);
 
   const { toast } = useToast();
 
@@ -135,7 +135,6 @@ export function CrudTable<T extends { id: string | number }>({
           description: "Item added successfully",
         });
         setAddFormData({});
-        setIsAdding(false);
       } catch (error) {
         toast({
           title: "Error",
@@ -144,11 +143,6 @@ export function CrudTable<T extends { id: string | number }>({
         });
       }
     });
-  };
-
-  const handleAddCancel = () => {
-    setAddFormData({});
-    setIsAdding(false);
   };
 
   const handleInputChange = (key: string, value: any) => {
@@ -253,7 +247,9 @@ export function CrudTable<T extends { id: string | number }>({
                 <TableRow className="hover:bg-transparent">
                   {columns.map((column) => (
                     <TableCell key={String(column.key)}>
-                      {column.required ? renderAddInput(column) : null}
+                      <div className="w-[20rem]">
+                        {column.required ? renderAddInput(column) : null}
+                      </div>
                     </TableCell>
                   ))}
                   <TableCell>
@@ -296,14 +292,17 @@ export function CrudTable<T extends { id: string | number }>({
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {onEdit && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEdit(item)}
-                              disabled={isPending}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
+                            <CrudButtonWithDialog
+                              data={item}
+                              columns={columns}
+                              title="Edit item"
+                              description="Make changes to this item."
+                              onConfirm={async (data) => {
+                                await handleEdit({ ...item, ...data });
+                              }}
+                              icon={<Edit className="h-4 w-4" />}
+                              disabled={isPending || deletingId === item.id}
+                            />
                           )}
                           {onDelete && (
                             <CrudButtonWithConfirm

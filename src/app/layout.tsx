@@ -1,3 +1,4 @@
+import type React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -26,12 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full bg-background">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased grow flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full flex flex-col`}
       >
         <Navbar />
-        <div className="container mx-auto p-4 grow">{children}</div>
+        <div className="container mx-auto p-4 h-full">{children}</div>
         <Toaster />
       </body>
     </html>

@@ -1,5 +1,10 @@
 // app/seasons/page.tsx
-import { createSeason, deleteSeason, getAllSeasons } from "@/actions/seasons";
+import {
+  createSeason,
+  deleteSeason,
+  getAllSeasons,
+  updateSeason,
+} from "@/actions/seasons";
 import { CrudPage } from "@/components/CrudComponents/CrudPage";
 
 export default function SeasonsPage() {
@@ -22,7 +27,7 @@ export default function SeasonsPage() {
       }}
       editAction={async (item) => {
         "use server";
-        await getAllSeasons();
+        await updateSeason(item.id, item);
       }}
       deleteAction={async (id) => {
         "use server";
