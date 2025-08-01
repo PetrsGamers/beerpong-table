@@ -6,19 +6,11 @@
 - add db seeding and helper scripts
 - introduce dev branch and merge into it (master stays intact for now)
 - create a v2 tag (?)
-- come up with generic CRUD components
-  => season, tournament, matches are basically the same thing (teams and players too)
-  => CRUD table with onEdit dialog and addNewItem dialog and button and generic onRemove
-- add new screens - check end of file for list of screens
 
-CRUD components todo:
-
-- finish generic table
-  - make delete confirmation
-  - add a "create new entry" field for adding new entries
-  - add link so you can click through the table entries
-- finish generic page
-- implement all required pages in order - seasons > tournaments > matches > seasonDetails (teams mgmt) > tournamentDetails (player mgmt?) > matchDetails (table form)
+- ## come up with generic CRUD components
+- finish tournaments page with CRUD (add actions and mby add created_at to schema)
+- add CRUD for managing teams in a season
+- reimplement tournament details page
 
 ## version 2 upgrades
 

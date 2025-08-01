@@ -5,21 +5,22 @@ import {
   getAllSeasons,
   updateSeason,
 } from "@/actions/seasons";
+import { getAllTournaments } from "@/actions/tournaments";
 import { CrudPage } from "@/components/CrudComponents/CrudPage";
 import { NewSeason } from "@/db/types";
 
-export default function SeasonsPage() {
+export default function TournamentsPage() {
   return (
     <CrudPage
-      title="Seasons"
-      fetchData={getAllSeasons}
+      title="Tournaments"
+      fetchData={getAllTournaments}
       columns={[
         {
           key: "name",
           label: "Name",
           required: true,
           type: "string",
-          link: "/seasons/[seasonId]",
+          link: "/seasons/[seasonId]/tournaments/[tournamentId]",
         },
         {
           key: "createTime",

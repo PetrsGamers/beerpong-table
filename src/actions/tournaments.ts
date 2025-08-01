@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { tournament } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function getAllTournaments() {
   const tournaments = await db.select().from(tournament);
@@ -14,6 +15,7 @@ export async function createTournament(name: string) {
     .insert(tournament)
     .values({ name })
     .returning();
+  revalidatePath("/seasons/[seasonId]/tournaments");
   return newTournament[0];
 }
 
@@ -32,6 +34,7 @@ export async function updateTournament(id: number, name: string) {
     .set({ name })
     .where(eq(tournament.id, id))
     .returning();
+  revalidatePath("/seasons/[seasonId]/tournaments");
   return updatedTournament[0];
 }
 
@@ -40,5 +43,6 @@ export async function deleteTournament(id: number) {
     .delete(tournament)
     .where(eq(tournament.id, id))
     .returning();
+  revalidatePath("/seasons/[seasonId]/tournaments");
   return deletedTournament[0];
 }

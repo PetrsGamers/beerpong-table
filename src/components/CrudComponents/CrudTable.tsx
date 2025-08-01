@@ -31,6 +31,7 @@ interface CrudTableProps<T> {
   onEdit?: (item: T) => Promise<void>;
   onDelete?: (id: number) => Promise<void>;
   onAdd?: (item: Partial<T>) => Promise<void>;
+  routeParams?: Record<string, string | number>;
   isLoading?: boolean;
 }
 
@@ -40,6 +41,7 @@ export function CrudTable<T extends { id: number }>({
   onEdit,
   onDelete,
   onAdd,
+  routeParams = {},
   isLoading = false,
 }: CrudTableProps<T>) {
   const [isPending, startTransition] = useTransition();
@@ -91,6 +93,44 @@ export function CrudTable<T extends { id: number }>({
     });
   };
 
+  const parseDynamicLink = (linkTemplate: string, item: T): string => {
+    return linkTemplate.replace(/\[([^\]]+)\]/g, (match, paramName) => {
+      // First check if it's in routeParams (current route parameters)
+      if (routeParams[paramName]) {
+        return String(routeParams[paramName]);
+      }
+
+      // Then check if it's in the item data
+      if (paramName in item) {
+        return String(item[paramName as keyof T]);
+      }
+
+      // Try common variations for item data
+      const variations = [
+        paramName,
+        paramName.toLowerCase(),
+        paramName + "Id",
+        paramName.toLowerCase() + "id",
+        "id", // fallback to id if nothing else matches
+      ];
+
+      for (const variation of variations) {
+        if (variation in item) {
+          return String(item[variation as keyof T]);
+        }
+      }
+
+      // If no match found, return the original bracketed text
+      console.warn(
+        `Could not resolve parameter: ${paramName}. Available routeParams:`,
+        routeParams,
+        "Item:",
+        item
+      );
+      return String(match);
+    });
+  };
+
   const renderCellValue = (column: CrudTableColumn<T>, item: T) => {
     const value = item[column.key];
 
@@ -104,8 +144,9 @@ export function CrudTable<T extends { id: number }>({
     }
 
     if (column.link) {
+      const href = parseDynamicLink(column.link, item);
       return (
-        <a href={column.link.replace("[id]", String(item.id))}>
+        <a href={href} className="font-semi-bold hover:underline">
           {String(value)}
         </a>
       );
