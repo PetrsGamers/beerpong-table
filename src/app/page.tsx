@@ -6,6 +6,7 @@ import {
   updateSeason,
 } from "@/actions/seasons";
 import { CrudPage } from "@/components/CrudComponents/CrudPage";
+import { NewSeason } from "@/db/types";
 
 export default function SeasonsPage() {
   return (
@@ -21,9 +22,9 @@ export default function SeasonsPage() {
           type: "date",
         },
       ]}
-      createAction={async (formData: { name: string }) => {
+      createAction={async (season: NewSeason) => {
         "use server";
-        await createSeason(formData.name);
+        await createSeason(season);
       }}
       editAction={async (item) => {
         "use server";

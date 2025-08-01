@@ -29,7 +29,7 @@ interface CrudTableProps<T> {
   data: T[];
   columns: CrudTableColumn<T>[];
   onEdit?: (item: T) => Promise<void>;
-  onDelete?: (id: string | number) => Promise<void>;
+  onDelete?: (id: number) => Promise<void>;
   onAdd?: (item: Partial<T>) => Promise<void>;
   isLoading?: boolean;
 }

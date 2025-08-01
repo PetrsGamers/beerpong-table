@@ -1,16 +1,16 @@
 import { CrudTable } from "./CrudTable";
 import { CrudTableColumn } from "./types";
 
-export type CrudPageProps<T extends { id: string | number }> = {
+export type CrudPageProps<T extends { id: number }> = {
   title: string;
   fetchData: () => Promise<T[]>;
   columns: CrudTableColumn<T>[];
   createAction?: (item: Partial<T>) => Promise<void>;
   editAction?: (item: T) => Promise<void>;
-  deleteAction: (id: string | number) => Promise<void>;
+  deleteAction: (id: number) => Promise<void>;
 };
 
-export async function CrudPage<T extends { id: string | number }>({
+export async function CrudPage<T extends { id: number }>({
   title,
   fetchData,
   columns,
