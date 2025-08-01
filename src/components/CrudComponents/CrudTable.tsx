@@ -103,6 +103,13 @@ export function CrudTable<T extends { id: number }>({
       return value.toLocaleDateString();
     }
 
+    if (column.link) {
+      return (
+        <a href={column.link.replace("[id]", String(item.id))}>
+          {String(value)}
+        </a>
+      );
+    }
     return String(value);
   };
 
