@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   id: number;
-  matches?: any[]; // Add matches prop to check if any exist
+  matches?: unknown[]; // Add matches prop to check if any exist
 }
 
 function AddNewMatchButton({ id, matches }: Props) {

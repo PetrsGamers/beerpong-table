@@ -14,7 +14,7 @@ export const Navbar = async () => {
       </div>
       <div className="navbar-end flex-none">
         <ul className="menu menu-horizontal px-1">
-          {session?.userId! && (
+          {session && typeof session === 'object' && 'userId' in session && (session as { userId: string }).userId && (
             <li>
               <Link href="/idkyet">Nejaky random link tady </Link>
             </li>

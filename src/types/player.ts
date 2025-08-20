@@ -1,8 +1,8 @@
 export type Player = {
   id: number;
-  name: string;
-  score: number;
-  blowjobs: number;
+  name: string | null;
+  score: string | null;
+  blowjobs: string | null;
 };
 
 export type PlayerCouple = {

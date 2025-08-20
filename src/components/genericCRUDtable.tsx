@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export const GenericCRUDTable = () => {
   return (
     <div className="overflow-x-auto">
@@ -28,9 +30,12 @@ export const GenericCRUDTable = () => {
               <div className="flex items-center gap-3">
                 <div className="avatar">
                   <div className="mask mask-squircle h-12 w-12">
-                    <img
+                    <Image
                       src="https://img.daisyui.com/images/profile/demo/2@94.webp"
                       alt="Avatar Tailwind CSS Component"
+                      width={48}
+                      height={48}
+                      className="object-cover"
                     />
                   </div>
                 </div>
@@ -63,9 +68,12 @@ export const GenericCRUDTable = () => {
               <div className="flex items-center gap-3">
                 <div className="avatar">
                   <div className="mask mask-squircle h-12 w-12">
-                    <img
+                    <Image
                       src="https://img.daisyui.com/images/profile/demo/3@94.webp"
                       alt="Avatar Tailwind CSS Component"
+                      width={48}
+                      height={48}
+                      className="object-cover"
                     />
                   </div>
                 </div>
@@ -96,9 +104,12 @@ export const GenericCRUDTable = () => {
               <div className="flex items-center gap-3">
                 <div className="avatar">
                   <div className="mask mask-squircle h-12 w-12">
-                    <img
+                    <Image
                       src="https://img.daisyui.com/images/profile/demo/4@94.webp"
                       alt="Avatar Tailwind CSS Component"
+                      width={48}
+                      height={48}
+                      className="object-cover"
                     />
                   </div>
                 </div>
@@ -131,9 +142,12 @@ export const GenericCRUDTable = () => {
               <div className="flex items-center gap-3">
                 <div className="avatar">
                   <div className="mask mask-squircle h-12 w-12">
-                    <img
+                    <Image
                       src="https://img.daisyui.com/images/profile/demo/5@94.webp"
                       alt="Avatar Tailwind CSS Component"
+                      width={48}
+                      height={48}
+                      className="object-cover"
                     />
                   </div>
                 </div>

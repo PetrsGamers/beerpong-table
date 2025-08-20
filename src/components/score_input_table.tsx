@@ -34,13 +34,13 @@ export const ScoreInputTable = (props: {
 
   // Handle team selection change
   const onSelectChange = async (
-    teamSetter: any,
-    playerSetter: any,
-    selectedTeamId: any
+    teamSetter: React.Dispatch<React.SetStateAction<Team | null>>,
+    playerSetter: React.Dispatch<React.SetStateAction<PlayerCouple>>,
+    selectedTeamId: string
   ) => {
     const selectedTeam = props.teams.find(
       (team) => team.id === parseInt(selectedTeamId)
-    );
+    ) || null;
     teamSetter(selectedTeam);
 
     if (selectedTeam) {
@@ -55,14 +55,14 @@ export const ScoreInputTable = (props: {
 
   function handleModalConfirm() {
     if (formRef?.current) {
-      //@ts-ignore
+      // @ts-expect-error - requestSubmit is not in all TypeScript versions
       formRef.current.requestSubmit();
     }
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
 
     const values = Object.fromEntries(formData.entries());
     console.log(values); // Use form data as needed
@@ -139,7 +139,7 @@ export const ScoreInputTable = (props: {
     });
 
     // reset the form values to default
-    event.target.reset();
+    event.currentTarget.reset();
   };
 
   return (

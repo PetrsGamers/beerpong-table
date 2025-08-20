@@ -1,4 +1,4 @@
-export const TableInput = (props: any) => (
+export const TableInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
   <td>
     <input
       type="number"

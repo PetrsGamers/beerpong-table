@@ -34,8 +34,8 @@ export const addPlayerScoreAndBJ = async (
     throw new Error("Player not found");
   }
 
-  let newScore = pl.score ? Number(pl.score!) + score : score;
-  let newBJ = pl.blowjobs ? Number(pl.blowjobs!) + BJ : BJ;
+  const newScore = pl.score ? Number(pl.score!) + score : score;
+  const newBJ = pl.blowjobs ? Number(pl.blowjobs!) + BJ : BJ;
 
   await db
     .update(player)

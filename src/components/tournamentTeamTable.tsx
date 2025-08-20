@@ -13,7 +13,11 @@ interface TeamData {
 
 export default async function TournamentTeamTable(id: { id: number }) {
   const rawTeamData = await loadAllTeams(id.id);
-  const tournamentTeamData: TeamData[] = rawTeamData.map((item: any) => ({
+  const tournamentTeamData: TeamData[] = rawTeamData.map((item: {
+    team: { id: number; name: string | null; player1_id: number | null; player2_id: number | null };
+    player1?: { name: string } | null;
+    player2?: { name: string } | null;
+  }) => ({
     teamId: item.team.id,
     teamName: item.team.name,
     player1Id: item.team.player1_id,

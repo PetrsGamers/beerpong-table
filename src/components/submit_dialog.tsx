@@ -10,7 +10,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export function SubmitDialog({ handleModalConfirm, description }: any) {
+export function SubmitDialog({ handleModalConfirm, description }: {
+  handleModalConfirm: () => void;
+  description: string;
+}) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -28,7 +31,7 @@ export function SubmitDialog({ handleModalConfirm, description }: any) {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction>
-            <button onClick={(e) => handleModalConfirm(e)}>Submit Match</button>
+            <button onClick={() => handleModalConfirm()}>Submit Match</button>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
