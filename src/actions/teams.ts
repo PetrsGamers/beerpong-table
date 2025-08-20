@@ -25,7 +25,7 @@ export async function loadAllTeams(id: number) {
 }
 
 export async function deleteTeam(id: number) {
-  const result = await db.delete(team).where(eq(team.id, id));
+  await db.delete(team).where(eq(team.id, id));
   revalidatePath(`/${id}`);
 }
 

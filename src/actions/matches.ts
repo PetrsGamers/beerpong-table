@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { match, player_match_score } from "@/db/schema";
+import { match } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
