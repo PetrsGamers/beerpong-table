@@ -1,6 +1,8 @@
 "use server";
 import { getPlayersForTournamentId } from "@/actions/players";
 import { getTeamsForTournamentSorted } from "@/actions/teams";
+import { getTournamentById } from "@/actions/tournaments";
+import ExportCSVButton from "@/components/ExportCSVButton";
 
 export default async function Home(params: {
   params: { tournamentid: number };
@@ -10,6 +12,7 @@ export default async function Home(params: {
   const teamsOrdered = await getTeamsForTournamentSorted(
     params.params.tournamentid
   );
+  const tournament = await getTournamentById(params.params.tournamentid);
 
   const playersSortedByBlowjobs = playersBJ.sort(
     (a, b) => (Number(b.blowjobs) ?? 0) - (Number(a.blowjobs) ?? 0)
@@ -18,9 +21,12 @@ export default async function Home(params: {
     (a, b) => (Number(b.score) ?? 0) - (Number(a.score) ?? 0)
   );
 
+  const tournamentName = tournament?.name ?? "tournament";
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <div className="flex justify-end w-full"></div>
         <div className="flex justify-between w-full text-center gap-8 row-start-3">
           <div className="rounded-lg text-center shadow-md p-6">
             <h2 className="text-xl font-bold mb-4">Celkové skóre</h2>
@@ -117,6 +123,12 @@ export default async function Home(params: {
             </table>
           </div>
         </div>
+        <ExportCSVButton
+          teams={teamsOrdered}
+          playersByScore={playersSortedByScore}
+          playersByBlowjobs={playersSortedByBlowjobs}
+          tournamentName={tournamentName}
+        />
       </main>
     </div>
   );
