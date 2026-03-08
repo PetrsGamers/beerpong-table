@@ -11,8 +11,8 @@ interface Props {
 }
 
 function escapeCSV(value: string | number | null | undefined): string {
-  const str = String(value ?? "");
-  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+  const str = String(value ?? "").replace(/\n/g, " ");
+  if (str.includes(",") || str.includes('"')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
