@@ -1,12 +1,12 @@
 "use client";
 
-import { PlayerStats } from "@/types/player";
+import { Player } from "@/types/player";
 import { TeamStats } from "@/types/team";
 
 interface Props {
   teams: TeamStats[];
-  playersByScore: PlayerStats[];
-  playersByBlowjobs: PlayerStats[];
+  playersByScore: Player[];
+  playersByBlowjobs: Player[];
   tournamentName: string;
 }
 

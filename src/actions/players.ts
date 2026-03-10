@@ -2,7 +2,6 @@
 
 import { db } from "@/db";
 import { player, team } from "@/db/schema";
-import { PlayerStats } from "@/types/player";
 import { eq } from "drizzle-orm";
 
 export const getPlayerById = async (playerId: number) => {
