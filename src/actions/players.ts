@@ -4,6 +4,13 @@ import { db } from "@/db";
 import { player, team } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
+export type PlayerStats = {
+  id: number;
+  name: string | null;
+  score: string | null;
+  blowjobs: string | null;
+};
+
 export const getPlayerById = async (playerId: number) => {
   const pl = await db.select().from(player).where(eq(player.id, playerId));
   return pl.length > 0 ? pl[0] : null;

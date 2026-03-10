@@ -4,7 +4,7 @@ import { match, player, team } from "@/db/schema";
 import { aliasedTable, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-type Team = {
+export type TeamStats = {
   id: number;
   score: number;
   name: string;
@@ -43,7 +43,7 @@ export const getTeamsForTournamentSorted = async (tournamentId: number) => {
     .from(match)
     .where(eq(match.tournament_id, tournamentId));
 
-  const teamList: Team[] = [];
+  const teamList: TeamStats[] = [];
 
   for (const match of matches) {
     const scores = match.score?.split(":");
