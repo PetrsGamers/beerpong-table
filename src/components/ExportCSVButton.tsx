@@ -1,7 +1,7 @@
 "use client";
 
-import { PlayerStats } from "@/actions/players";
-import { TeamStats } from "@/actions/teams";
+import { PlayerStats } from "@/types/player";
+import { TeamStats } from "@/types/team";
 
 interface Props {
   teams: TeamStats[];

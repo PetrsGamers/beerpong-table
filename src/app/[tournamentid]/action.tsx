@@ -1,35 +1,10 @@
 "use server";
 
 import { match, player, team, tournament } from "@/db/schema";
+import { MatchWithTeams } from "@/types/match";
 import { aliasedTable, and, eq } from "drizzle-orm"; // Replace "some-library" with the actual library name
 import { revalidatePath } from "next/cache";
 import { db } from "../../db";
-
-export type MatchWithTeams = {
-  match: {
-    id: number;
-    score: string | null;
-    tournament_id: number | null;
-    team1_id: number | null;
-    team2_id: number | null;
-  };
-  team1: {
-    id: number;
-    name: string | null;
-    score: string | null;
-    player1_id: number | null;
-    player2_id: number | null;
-    tournament_id: number | null;
-  } | null;
-  team2: {
-    id: number;
-    name: string | null;
-    score: string | null;
-    player1_id: number | null;
-    player2_id: number | null;
-    tournament_id: number | null;
-  } | null;
-};
 
 export async function loadMatches(
   id: number

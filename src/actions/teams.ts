@@ -1,14 +1,9 @@
 "use server";
 import { db } from "@/db";
 import { match, player, team } from "@/db/schema";
+import { TeamStats } from "@/types/team";
 import { aliasedTable, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-
-export type TeamStats = {
-  id: number;
-  score: number;
-  name: string;
-};
 export async function loadAllTeams(id: number) {
   const player1 = aliasedTable(player, "player1");
   const player2 = aliasedTable(player, "player2");

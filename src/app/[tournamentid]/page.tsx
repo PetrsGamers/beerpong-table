@@ -5,7 +5,8 @@ import CreateTeam from "@/components/createTeam";
 import { MatchesOverViewTable } from "@/components/matchesOverviewTable";
 import StatsTournamentButton from "@/components/statsTournamentButton";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
-import { loadMatches, loadTournament, MatchWithTeams } from "./action";
+import { MatchWithTeams } from "@/types/match";
+import { loadMatches, loadTournament } from "./action";
 
 export default async function Home(params: {
   params: { tournamentid: number };
