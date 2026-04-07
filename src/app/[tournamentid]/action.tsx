@@ -8,7 +8,7 @@ import { db } from "../../db";
 
 export async function loadMatches(
   id: number
-): Promise<MatchWithTeams[] | null> {
+): Promise<MatchWithTeams[]> {
   const team1 = aliasedTable(team, "team1");
   const team2 = aliasedTable(team, "team2");
 
@@ -23,11 +23,42 @@ export async function loadMatches(
     .leftJoin(team1, eq(match.team1_id, team1.id))
     .leftJoin(team2, eq(match.team2_id, team2.id));
 
-  if (matches.length === 0) {
-    return null;
-  }
-
-  return matches as MatchWithTeams[];
+  return matches
+    .filter(
+      (item) =>
+        item.match.tournament_id !== null &&
+        item.match.team1_id !== null &&
+        item.match.team2_id !== null
+    )
+    .map((item) => ({
+      match: {
+        id: item.match.id,
+        score: item.match.score ?? "",
+        tournament_id: item.match.tournament_id as number,
+        team1_id: item.match.team1_id as number,
+        team2_id: item.match.team2_id as number,
+      },
+      team1: item.team1
+        ? {
+            id: item.team1.id,
+            name: item.team1.name ?? "",
+            score: item.team1.score ?? "",
+            player1_id: item.team1.player1_id,
+            player2_id: item.team1.player2_id,
+            tournament_id: item.team1.tournament_id ?? id,
+          }
+        : undefined,
+      team2: item.team2
+        ? {
+            id: item.team2.id,
+            name: item.team2.name ?? "",
+            score: item.team2.score ?? "",
+            player1_id: item.team2.player1_id,
+            player2_id: item.team2.player2_id,
+            tournament_id: item.team2.tournament_id ?? id,
+          }
+        : undefined,
+    }));
 }
 
 export async function loadTournament(id: number) {

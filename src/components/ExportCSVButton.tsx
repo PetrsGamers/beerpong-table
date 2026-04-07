@@ -10,7 +10,7 @@ interface Props {
   tournamentName: string;
 }
 
-function escapeCSV(value: string | number | null | undefined): string {
+function escapeCSV(value: string | number | undefined): string {
   const str = String(value ?? "");
 
   if (/[,"\n\r]/.test(str)) {

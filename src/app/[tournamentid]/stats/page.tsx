@@ -15,10 +15,10 @@ export default async function Home(params: {
   const tournament = await getTournamentById(params.params.tournamentid);
 
   const playersSortedByBlowjobs = playersBJ.sort(
-    (a, b) => (Number(b.blowjobs) ?? 0) - (Number(a.blowjobs) ?? 0)
+    (a, b) => b.blowjobs - a.blowjobs
   );
   const playersSortedByScore = playersSC.sort(
-    (a, b) => (Number(b.score) ?? 0) - (Number(a.score) ?? 0)
+    (a, b) => b.score - a.score
   );
 
   const tournamentName = tournament?.name ?? "tournament";

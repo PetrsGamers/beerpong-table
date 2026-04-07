@@ -11,7 +11,7 @@ import { loadMatches, loadTournament } from "./action";
 export default async function Home(params: {
   params: { tournamentid: number };
 }) {
-  const matches: MatchWithTeams[] | null = await loadMatches(
+  const matches: MatchWithTeams[] = await loadMatches(
     params.params.tournamentid
   );
   if (isNaN(params.params.tournamentid)) {
@@ -25,6 +25,8 @@ export default async function Home(params: {
     return <div>Tournament not found</div>;
   }
 
+  const hasMatches = matches.length > 0;
+
   return (
     <>
       <div className="min-h-screen bg-black text-white">
@@ -32,7 +34,7 @@ export default async function Home(params: {
         <div className="border-b border-gray-800">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold">{tournament.name}</h1>
-            {matches && (
+            {hasMatches && (
               <p className="text-gray-400 mt-2">
                 Total Matches: {matches.length}
                 {matches.length === (teams.length * (teams.length - 1)) / 2 ? (
@@ -56,15 +58,15 @@ export default async function Home(params: {
             <StatsTournamentButton id={params.params.tournamentid} />
             <AddNewMatchButton
               id={params.params.tournamentid}
-              matches={matches || undefined}
+              matches={hasMatches ? matches : undefined}
             />
           </div>
 
           {/* Main Content */}
           <main
-            className={matches ? "" : "grid grid-cols-1 lg:grid-cols-2 gap-8"}
+            className={hasMatches ? "" : "grid grid-cols-1 lg:grid-cols-2 gap-8"}
           >
-            {matches ? (
+            {hasMatches ? (
               <div className="bg-zinc-900 rounded-lg border border-gray-800 p-6">
                 <h2 className="text-xl font-semibold mb-4">Match Overview</h2>
                 <MatchesOverViewTable matches={matches} />

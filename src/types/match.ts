@@ -1,25 +1,25 @@
 export type MatchWithTeams = {
   match: {
     id: number;
-    score: string | null;
-    tournament_id: number | null;
-    team1_id: number | null;
-    team2_id: number | null;
+    score: string;
+    tournament_id: number;
+    team1_id: number;
+    team2_id: number;
   };
   team1: {
     id: number;
-    name: string | null;
-    score: string | null;
+    name: string;
+    score: string;
     player1_id: number | null;
     player2_id: number | null;
-    tournament_id: number | null;
-  } | null;
+    tournament_id: number;
+  } | undefined;
   team2: {
     id: number;
-    name: string | null;
-    score: string | null;
+    name: string;
+    score: string;
     player1_id: number | null;
     player2_id: number | null;
-    tournament_id: number | null;
-  } | null;
+    tournament_id: number;
+  } | undefined;
 };
