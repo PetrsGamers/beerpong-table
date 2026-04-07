@@ -4,18 +4,19 @@ import { getMatchesForTournament } from "@/actions/matches";
 import { loadAllTeams } from "@/actions/teams";
 import { getAllTournaments } from "@/actions/tournaments";
 import CreateTournamentButton from "@/components/CreateTournametButton";
+import MultiTournamentExport from "@/components/MultiTournamentExport";
 import TournamentDetailsButton from "@/components/TournametDetailsButton";
 
 export default async function Home() {
   const tournaments = await getAllTournaments();
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="min-h-screen p-8 pb-20 sm:p-12">
+      <main className="mx-auto w-full max-w-[1280px] flex flex-col gap-8 items-center">
         <h1 className="text-2xl font-bold mb-4">Tournaments</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
           {tournaments.map(async (tournament) => (
             <div
-              className="card bg-base-100 w-96 shadow-xl"
+              className="card bg-base-100 w-full max-w-sm shadow-xl"
               key={tournament.id}
             >
               <div className="card-body">
@@ -34,6 +35,9 @@ export default async function Home() {
           ))}
         </div>
       </main>
+      <div className="fixed bottom-8 left-8">
+        <MultiTournamentExport tournaments={tournaments} />
+      </div>
       <div className="fixed bottom-8 right-8">
         <CreateTournamentButton />
       </div>
