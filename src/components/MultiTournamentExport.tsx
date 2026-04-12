@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { downloadCSVFile, escapeCSV } from "@/lib/csv";
 import { useMemo, useState, useTransition } from "react";
 
 type Tournament = {
@@ -22,14 +23,6 @@ type PivotRow = {
   name: string;
   values: number[];
 };
-
-function escapeCSV(value: string | number | null | undefined): string {
-  const str = String(value ?? "");
-  if (/[,"\n\r]/.test(str)) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
-}
 
 function rowToCSVLine(name: string, values: number[]): string {
   const combined = values.reduce((acc, current) => acc + Number(current || 0), 0);
@@ -110,15 +103,8 @@ export default function MultiTournamentExport({
       );
 
       const csvContent = lines.join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-
       const filename = `multi-tournament-stats-${data.tournaments.length}.csv`;
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
+      downloadCSVFile(csvContent, filename);
     });
   };
 
