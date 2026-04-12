@@ -15,6 +15,20 @@ type PivotRow = {
   values: number[];
 };
 
+type StatEntry = {
+  name: string;
+  value: number;
+};
+
+type TournamentStatsFromDb = {
+  id: number;
+  name: string;
+  shortLabel: string;
+  teamStats: StatEntry[];
+  playerScoreStats: StatEntry[];
+  playerBjStats: StatEntry[];
+};
+
 export type CombinedExportData = {
   tournaments: TournamentColumn[];
   teamRows: PivotRow[];
@@ -46,28 +60,96 @@ function createShortLabel(name: string, fallbackIndex: number): string {
   return `T${fallbackIndex + 1}`;
 }
 
-function createUniqueName(
-  name: string,
-  seenCounts: Map<string, number>
-): string {
-  // Keep duplicate names distinct inside one tournament (e.g. "Petr", "Petr 2").
-  const count = (seenCounts.get(name) ?? 0) + 1;
-  seenCounts.set(name, count);
-  return count === 1 ? name : `${name} ${count}`;
-}
-
-function mapFromStatsRows(rows: { name: string; value: number }[]): Map<string, number> {
-  const result = new Map<string, number>();
-  const seenCounts = new Map<string, number>();
+function withUniqueNames(rows: StatEntry[]): StatEntry[] {
+  const seenCounts: Record<string, number> = {};
+  const uniqueRows: StatEntry[] = [];
 
   for (const row of rows) {
     if (!row.name) continue;
-
-    const uniqueName = createUniqueName(row.name, seenCounts);
-    result.set(uniqueName, row.value);
+    const count = (seenCounts[row.name] ?? 0) + 1;
+    seenCounts[row.name] = count;
+    uniqueRows.push({
+      name: count === 1 ? row.name : `${row.name} ${count}`,
+      value: row.value,
+    });
   }
 
-  return result;
+  return uniqueRows;
+}
+
+function toPivotRows(
+  names: string[],
+  perTournamentStats: StatEntry[][]
+): PivotRow[] {
+  // Build all rows in one pass: name -> [valueForTournament1, valueForTournament2, ...]
+  const rowValues: Record<string, number[]> = {};
+  for (const name of names) {
+    rowValues[name] = Array(perTournamentStats.length).fill(0);
+  }
+
+  perTournamentStats.forEach((stats, tournamentIndex) => {
+    for (const entry of stats) {
+      if (rowValues[entry.name]) {
+        rowValues[entry.name][tournamentIndex] = entry.value;
+      }
+    }
+  });
+
+  return names.map((name) => ({ name, values: rowValues[name] }));
+}
+
+type PlayerStatsBundle = {
+  playerScoreStats: StatEntry[];
+  playerBjStats: StatEntry[];
+};
+
+async function loadTournamentStatsFromDb(
+  tournamentId: number,
+  index: number
+): Promise<TournamentStatsFromDb> {
+  // Reuse existing server actions to keep this easy to read.
+  const [tournament, teamsSorted, playersRaw] = await Promise.all([
+    getTournamentById(tournamentId),
+    getTeamsForTournamentSorted(tournamentId),
+    getPlayersForTournamentId(tournamentId),
+  ]);
+
+  const tournamentName =
+    normalizeName(tournament?.name) || `Tournament ${tournamentId}`;
+
+  const players = playersRaw.filter(
+    (player): player is NonNullable<typeof player> => Boolean(player)
+  );
+  const playersSortedByScore = [...players].sort(
+    (a, b) => toNumber(b.score) - toNumber(a.score)
+  );
+  const playersSortedByBlowjobs = [...players].sort(
+    (a, b) => toNumber(b.blowjobs) - toNumber(a.blowjobs)
+  );
+
+  return {
+    id: tournamentId,
+    name: tournamentName,
+    shortLabel: createShortLabel(tournamentName, index),
+    teamStats: withUniqueNames(
+      teamsSorted.map((team) => ({
+        name: normalizeName(team.name),
+        value: toNumber(team.score),
+      }))
+    ),
+    playerScoreStats: withUniqueNames(
+      playersSortedByScore.map((player) => ({
+        name: normalizeName(player.name),
+        value: toNumber(player.score),
+      }))
+    ),
+    playerBjStats: withUniqueNames(
+      playersSortedByBlowjobs.map((player) => ({
+        name: normalizeName(player.name),
+        value: toNumber(player.blowjobs),
+      }))
+    ),
+  };
 }
 
 function sortByCombinedDesc(rows: PivotRow[]): PivotRow[] {
@@ -102,62 +184,14 @@ export async function getCombinedExportData(
     };
   }
 
-  const perTournament = await Promise.all(
-    uniqueIds.map(async (id, index) => {
-      const [tournament, teamsSorted, playersRaw] = await Promise.all([
-        getTournamentById(id),
-        getTeamsForTournamentSorted(id),
-        getPlayersForTournamentId(id),
-      ]);
-
-      const tournamentName = normalizeName(tournament?.name) || `Tournament ${id}`;
-
-      // Match stats page ordering logic before converting to name maps.
-      const players = playersRaw.filter(
-        (player): player is NonNullable<typeof player> => Boolean(player)
-      );
-      const playersSortedByScore = [...players].sort(
-        (a, b) => toNumber(b.score) - toNumber(a.score)
-      );
-      const playersSortedByBlowjobs = [...players].sort(
-        (a, b) => toNumber(b.blowjobs) - toNumber(a.blowjobs)
-      );
-
-      // Build name->value maps from the same sources used by /[tournamentid]/stats.
-      const teamMap = mapFromStatsRows(
-        teamsSorted.map((team) => ({
-          name: normalizeName(team.name),
-          value: toNumber(team.score),
-        }))
-      );
-      const playerScoreMap = mapFromStatsRows(
-        playersSortedByScore.map((player) => ({
-          name: normalizeName(player.name),
-          value: toNumber(player.score),
-        }))
-      );
-      const playerBjMap = mapFromStatsRows(
-        playersSortedByBlowjobs.map((player) => ({
-          name: normalizeName(player.name),
-          value: toNumber(player.blowjobs),
-        }))
-      );
-
-      return {
-        id,
-        name: tournamentName,
-        shortLabel: createShortLabel(tournamentName, index),
-        teamMap,
-        playerScoreMap,
-        playerBjMap,
-      };
-    })
+  const tournamentStatsFromDb = await Promise.all(
+    uniqueIds.map((id, index) => loadTournamentStatsFromDb(id, index))
   );
 
-  const usedLabels = new Map<string, number>();
-  const tournaments: TournamentColumn[] = perTournament.map((item) => {
-    const currentCount = usedLabels.get(item.shortLabel) ?? 0;
-    usedLabels.set(item.shortLabel, currentCount + 1);
+  const usedLabels: Record<string, number> = {};
+  const tournaments: TournamentColumn[] = tournamentStatsFromDb.map((item) => {
+    const currentCount = usedLabels[item.shortLabel] ?? 0;
+    usedLabels[item.shortLabel] = currentCount + 1;
 
     const uniqueShortLabel =
       currentCount === 0 ? item.shortLabel : `${item.shortLabel}${currentCount + 1}`;
@@ -171,10 +205,10 @@ export async function getCombinedExportData(
 
   const allTeamNames = new Set<string>();
   const allPlayerNames = new Set<string>();
-  for (const item of perTournament) {
-    item.teamMap.forEach((_, name) => allTeamNames.add(name));
-    item.playerScoreMap.forEach((_, name) => allPlayerNames.add(name));
-    item.playerBjMap.forEach((_, name) => allPlayerNames.add(name));
+  for (const item of tournamentStatsFromDb) {
+    item.teamStats.forEach((entry) => allTeamNames.add(entry.name));
+    item.playerScoreStats.forEach((entry) => allPlayerNames.add(entry.name));
+    item.playerBjStats.forEach((entry) => allPlayerNames.add(entry.name));
   }
 
   const sortedTeamNames = Array.from(allTeamNames).sort((a, b) =>
@@ -184,18 +218,18 @@ export async function getCombinedExportData(
     a.localeCompare(b)
   );
 
-  const teamRows: PivotRow[] = sortedTeamNames.map((name) => ({
-    name,
-    values: perTournament.map((item) => item.teamMap.get(name) ?? 0),
-  }));
-  const playerScoreRows: PivotRow[] = sortedPlayerNames.map((name) => ({
-    name,
-    values: perTournament.map((item) => item.playerScoreMap.get(name) ?? 0),
-  }));
-  const playerBjRows: PivotRow[] = sortedPlayerNames.map((name) => ({
-    name,
-    values: perTournament.map((item) => item.playerBjMap.get(name) ?? 0),
-  }));
+  const teamRows = toPivotRows(
+    sortedTeamNames,
+    tournamentStatsFromDb.map((item) => item.teamStats)
+  );
+  const playerScoreRows = toPivotRows(
+    sortedPlayerNames,
+    tournamentStatsFromDb.map((item) => item.playerScoreStats)
+  );
+  const playerBjRows = toPivotRows(
+    sortedPlayerNames,
+    tournamentStatsFromDb.map((item) => item.playerBjStats)
+  );
 
   return {
     tournaments,
