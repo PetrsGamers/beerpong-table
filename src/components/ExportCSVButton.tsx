@@ -5,9 +5,9 @@ import { Player } from "@/types/player";
 import { Team } from "@/types/team";
 
 interface Props {
-  teams: Team[];
-  playersByScore: Player[];
-  playersByBlowjobs: Player[];
+  teams: any[];
+  playersByScore: any[];
+  playersByBlowjobs: any[];
   tournamentName: string;
 }
 
