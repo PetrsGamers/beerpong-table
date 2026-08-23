@@ -1,7 +1,6 @@
 "use server";
 
 import { getSession } from "@/actions/auth";
-import Link from "next/link";
 
 export const Navbar = async () => {
   const session = await getSession();
@@ -13,13 +12,6 @@ export const Navbar = async () => {
         </a>
       </div>
       <div className="navbar-end flex-none">
-        <ul className="menu menu-horizontal px-1">
-          {session?.userId! && (
-            <li>
-              <Link href="/idkyet">Nejaky random link tady </Link>
-            </li>
-          )}
-        </ul>
       </div>
       <div className="">
         <a href="/login" className="btn btn-square btn-ghost">
