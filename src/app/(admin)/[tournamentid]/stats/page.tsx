@@ -5,15 +5,16 @@ import { getTournamentById } from "@/actions/tournaments";
 import ExportCSVButton from "@/components/ExportCSVButton";
 import SharePublicLink from "@/components/SharePublicLink";
 
-export default async function Home(params: {
-  params: { tournamentid: number };
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ tournamentid: number }>;
 }) {
-  const playersBJ = await getPlayersForTournamentId(params.params.tournamentid);
-  const playersSC = await getPlayersForTournamentId(params.params.tournamentid);
-  const teamsOrdered = await getTeamsForTournamentSorted(
-    params.params.tournamentid
-  );
-  const tournament = await getTournamentById(params.params.tournamentid);
+  const { tournamentid } = await params;
+  const playersBJ = await getPlayersForTournamentId(tournamentid);
+  const playersSC = await getPlayersForTournamentId(tournamentid);
+  const teamsOrdered = await getTeamsForTournamentSorted(tournamentid);
+  const tournament = await getTournamentById(tournamentid);
 
   const playersSortedByBlowjobs = playersBJ.sort(
     (a, b) => (Number(b.blowjobs) ?? 0) - (Number(a.blowjobs) ?? 0)
@@ -130,7 +131,7 @@ export default async function Home(params: {
             playersByBlowjobs={playersSortedByBlowjobs}
             tournamentName={tournamentName}
           />
-          <SharePublicLink tournamentId={params.params.tournamentid} />
+          <SharePublicLink tournamentId={tournamentid} />
         </div>
       </main>
     </div>
