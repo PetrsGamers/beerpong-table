@@ -5,12 +5,13 @@ export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected
   const path = req.nextUrl.pathname;
   const currentPageIsLogin = path === "/login";
+  const isPublicPage = path.startsWith("/public");
 
   // 3. Decrypt the session from the cookie
   const session = await getSession();
 
-  // 5. Redirect to /login if the user is not authenticated
-  if (!currentPageIsLogin && !session?.userId) {
+  // 5. Redirect to /login if the user is not authenticated (skip for public pages)
+  if (!currentPageIsLogin && !isPublicPage && !session?.userId) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
   return NextResponse.next();

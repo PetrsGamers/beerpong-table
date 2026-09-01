@@ -1,6 +1,6 @@
 "use client";
 
-import { createTeam } from "@/app/[tournamentid]/action";
+import { createTeam } from "@/app/(admin)/[tournamentid]/action";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 
