@@ -1,6 +1,6 @@
 "use client";
 
-import { createTournament } from "@/app/new/action";
+import { createTournament } from "@/app/(admin)/new/action";
 import { useState } from "react";
 export default function Home() {
   const [tournamentName, setTournament] = useState("");

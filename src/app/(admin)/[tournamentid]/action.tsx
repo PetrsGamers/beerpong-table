@@ -3,7 +3,7 @@
 import { match, player, team, tournament } from "@/db/schema";
 import { aliasedTable, and, eq } from "drizzle-orm"; // Replace "some-library" with the actual library name
 import { revalidatePath } from "next/cache";
-import { db } from "../../db";
+import { db } from "@/db";
 
 export type MatchWithTeams = {
   match: {
