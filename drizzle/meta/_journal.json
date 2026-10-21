@@ -8,6 +8,13 @@
       "when": 1729979322218,
       "tag": "0000_black_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792598006380,
+      "tag": "0001_luxuriant_king_bedlam",
+      "breakpoints": true
     }
   ]
 }
