@@ -4,6 +4,38 @@ import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
+function renderRank(idx: number) {
+  if (idx === 0) {
+    return (
+      <span className="badge badge-warning gap-1 font-bold text-xs py-2.5 px-2.5 shadow-sm">
+        🥇 1.
+      </span>
+    );
+  }
+  if (idx === 1) {
+    return (
+      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 gap-1 font-bold text-xs py-2.5 px-2.5 shadow-sm">
+        🥈 2.
+      </span>
+    );
+  }
+  if (idx === 2) {
+    return (
+      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 gap-1 font-bold text-xs py-2.5 px-2.5 shadow-sm">
+        🥉 3.
+      </span>
+    );
+  }
+  return <span className="text-base-content/70 font-medium pl-1.5">{idx + 1}.</span>;
+}
+
+function getRowStyle(idx: number) {
+  if (idx === 0) return "bg-warning/15 font-bold hover:bg-warning/25 transition-colors";
+  if (idx === 1) return "bg-base-200/80 font-semibold hover:bg-base-200 transition-colors";
+  if (idx === 2) return "bg-base-200/50 font-medium hover:bg-base-200 transition-colors";
+  return "hover:bg-base-200/40 transition-colors";
+}
+
 export default async function PublicOverviewPage() {
   const tournaments = await getAllTournaments();
   
@@ -62,7 +94,7 @@ export default async function PublicOverviewPage() {
                   <table className="table w-full">
                     <thead>
                       <tr>
-                        <th>Poř.</th>
+                        <th className="w-20">Poř.</th>
                         <th>Tým</th>
                         {combinedData.tournaments.map((t: any) => (
                           <th key={t.id} className="text-center" title={t.name}>
@@ -83,8 +115,8 @@ export default async function PublicOverviewPage() {
                         return sortedTeams.slice(0, 20).map((row: any, idx: number) => {
                           const total = row.values.reduce((sum: number, val: number) => sum + (val || 0), 0);
                           return (
-                            <tr key={row.name} className={idx < 3 ? "font-bold bg-base-200" : ""}>
-                              <td>{idx + 1}.</td>
+                            <tr key={row.name} className={getRowStyle(idx)}>
+                              <td className="w-20">{renderRank(idx)}</td>
                               <td>{row.name}</td>
                               {row.values.map((val: number, vIdx: number) => (
                                 <td key={vIdx} className="text-center text-base-content/70">
@@ -110,7 +142,7 @@ export default async function PublicOverviewPage() {
                       <table className="table w-full">
                         <thead>
                           <tr>
-                            <th>Pořadí</th>
+                            <th className="w-20">Pořadí</th>
                             <th>Hráč</th>
                             <th className="text-right">Skóre</th>
                           </tr>
@@ -126,8 +158,8 @@ export default async function PublicOverviewPage() {
                             return sortedScore.slice(0, 10).map((row: any, idx: number) => {
                               const total = row.values.reduce((sum: number, val: number) => sum + (val || 0), 0);
                               return (
-                                <tr key={row.name} className={idx === 0 ? "font-bold bg-base-200" : ""}>
-                                  <td>{idx + 1}.</td>
+                                <tr key={row.name} className={getRowStyle(idx)}>
+                                  <td className="w-20">{renderRank(idx)}</td>
                                   <td>{row.name}</td>
                                   <td className="text-right">{total}</td>
                                 </tr>
@@ -148,7 +180,7 @@ export default async function PublicOverviewPage() {
                       <table className="table w-full">
                         <thead>
                           <tr>
-                            <th>Pořadí</th>
+                            <th className="w-20">Pořadí</th>
                             <th>Hráč</th>
                             <th className="text-right">Počet</th>
                           </tr>
@@ -164,8 +196,8 @@ export default async function PublicOverviewPage() {
                             return sortedBJ.slice(0, 10).map((row: any, idx: number) => {
                               const total = row.values.reduce((sum: number, val: number) => sum + (val || 0), 0);
                               return (
-                                <tr key={row.name} className={idx === 0 ? "font-bold bg-base-200" : ""}>
-                                  <td>{idx + 1}.</td>
+                                <tr key={row.name} className={getRowStyle(idx)}>
+                                  <td className="w-20">{renderRank(idx)}</td>
                                   <td>{row.name}</td>
                                   <td className="text-right">{total}</td>
                                 </tr>
