@@ -8,18 +8,21 @@ import SharePublicLink from "@/components/SharePublicLink";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
 import { loadMatches, loadTournament, MatchWithTeams } from "./action";
 
-export default async function Home(params: {
-  params: { tournamentid: number };
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ tournamentid: number }>;
 }) {
+  const { tournamentid } = await params;
   const matches: MatchWithTeams[] | null = await loadMatches(
-    params.params.tournamentid
+    tournamentid
   );
-  if (isNaN(params.params.tournamentid)) {
+  if (isNaN(tournamentid)) {
     return <div>Invalid tournament ID</div>;
   }
 
-  const tournament = await loadTournament(params.params.tournamentid);
-  const teams = await getTeamsForTournament(params.params.tournamentid);
+  const tournament = await loadTournament(tournamentid);
+  const teams = await getTeamsForTournament(tournamentid);
 
   if (!tournament?.id) {
     return <div>Tournament not found</div>;
@@ -53,10 +56,10 @@ export default async function Home(params: {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           {/* Action Buttons */}
           <div className="flex justify-end space-x-4 mb-8">
-            <SharePublicLink tournamentId={params.params.tournamentid} />
-            <StatsTournamentButton id={params.params.tournamentid} />
+            <SharePublicLink tournamentId={tournamentid} />
+            <StatsTournamentButton id={tournamentid} />
             <AddNewMatchButton
-              id={params.params.tournamentid}
+              id={tournamentid}
               matches={matches || undefined}
             />
           </div>
@@ -73,13 +76,13 @@ export default async function Home(params: {
             ) : (
               <>
                 <div className="bg-zinc-900 rounded-lg border border-gray-800 p-6">
-                  <CreateTeam id={params.params.tournamentid} />
+                  <CreateTeam id={tournamentid} />
                 </div>
                 <div className="bg-zinc-900 rounded-lg border border-gray-800 p-6">
                   <h2 className="text-xl font-semibold mb-4">
                     Tournament Teams
                   </h2>
-                  <TournamentTeamTable id={params.params.tournamentid} />
+                  <TournamentTeamTable id={tournamentid} />
                 </div>
               </>
             )}

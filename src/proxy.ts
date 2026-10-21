@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "./actions/auth";
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   // 2. Check if the current route is protected
   const path = req.nextUrl.pathname;
   const currentPageIsLogin = path === "/login";

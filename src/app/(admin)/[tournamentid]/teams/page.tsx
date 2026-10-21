@@ -2,14 +2,17 @@
 
 import { getTeamsForTournament } from "@/actions/teams";
 
-export default async function Home(params: {
-  params: { tournamentid: number };
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ tournamentid: number }>;
 }) {
-  const teams = await getTeamsForTournament(params.params.tournamentid);
+  const { tournamentid } = await params;
+  const teams = await getTeamsForTournament(tournamentid);
   console.log(teams);
   return (
     <div>
-      tymy: {params.params.tournamentid}
+      tymy: {tournamentid}
       {teams.map((team) => (
         <div key={team.id}>{team.name}</div>
       ))}

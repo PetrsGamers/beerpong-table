@@ -44,9 +44,10 @@ function getRowStyle(idx: number) {
 export default async function PublicTournamentPage({
   params,
 }: {
-  params: { tournamentid: string };
+  params: Promise<{ tournamentid: string }>;
 }) {
-  const tournamentId = parseInt(params.tournamentid);
+  const { tournamentid } = await params;
+  const tournamentId = parseInt(tournamentid);
   if (isNaN(tournamentId)) return notFound();
   
   const tournament = await getTournamentById(tournamentId);
