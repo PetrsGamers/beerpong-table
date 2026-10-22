@@ -22,12 +22,12 @@ export async function login(formData: FormData) {
 
 export async function logout() {
   // deleteSession();
-  cookies().delete("session");
+  (await cookies()).delete("session");
   redirect("/login");
 }
 
 export async function getSession() {
-  const cookie = cookies().get("session")?.value;
+  const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
   return session;
 }

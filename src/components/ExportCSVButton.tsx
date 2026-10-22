@@ -1,13 +1,22 @@
 "use client";
 
 import { downloadCSVFile, escapeCSV } from "@/lib/csv";
-import { Player } from "@/types/player";
-import { Team } from "@/types/team";
+
+export interface ExportCSVTeam {
+  name: string | null;
+  score: string | number | null;
+}
+
+export interface ExportCSVPlayer {
+  name: string | null;
+  score?: string | number | null;
+  blowjobs?: string | number | null;
+}
 
 interface Props {
-  teams: Team[];
-  playersByScore: Player[];
-  playersByBlowjobs: Player[];
+  teams: ExportCSVTeam[];
+  playersByScore: ExportCSVPlayer[];
+  playersByBlowjobs: ExportCSVPlayer[];
   tournamentName: string;
 }
 
@@ -24,7 +33,7 @@ function ExportCSVButton({
     lines.push("Team Rankings");
     lines.push("Rank,Team,Score");
     teams.forEach((team, index) => {
-      lines.push(`${index + 1},${escapeCSV(team.name)},${escapeCSV(team.score)}`);
+      lines.push(`${index + 1},${escapeCSV(team.name ?? "")},${escapeCSV(team.score ?? "")}`);
     });
 
     lines.push("");
@@ -33,7 +42,7 @@ function ExportCSVButton({
     lines.push("Top Scorers");
     lines.push("Rank,Player,Score");
     playersByScore.forEach((player, index) => {
-      lines.push(`${index + 1},${escapeCSV(player.name)},${escapeCSV(player.score)}`);
+      lines.push(`${index + 1},${escapeCSV(player.name ?? "")},${escapeCSV(player.score ?? "")}`);
     });
 
     lines.push("");
@@ -42,7 +51,7 @@ function ExportCSVButton({
     lines.push("BlowJob King");
     lines.push("Rank,Player,Count");
     playersByBlowjobs.forEach((player, index) => {
-      lines.push(`${index + 1},${escapeCSV(player.name)},${escapeCSV(player.blowjobs)}`);
+      lines.push(`${index + 1},${escapeCSV(player.name ?? "")},${escapeCSV(player.blowjobs ?? "")}`);
     });
 
     const csvContent = lines.join("\n");

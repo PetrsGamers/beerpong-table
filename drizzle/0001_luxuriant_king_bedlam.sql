@@ -1,0 +1,1 @@
+ALTER TABLE "match" ALTER COLUMN "score" SET DATA TYPE text;
