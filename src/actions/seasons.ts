@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { season } from "@/db/schema";
-import { NewSeason, Season } from "@/db/types";
+import { Season } from "@/db/types";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -19,7 +19,7 @@ export async function getSeasonById(id: number) {
   return seasonData[0];
 }
 
-export async function createSeason(s: NewSeason) {
+export async function createSeason(s: { name: string }) {
   const newSeason = await db
     .insert(season)
     .values({ name: s.name })
@@ -28,10 +28,10 @@ export async function createSeason(s: NewSeason) {
   return newSeason[0];
 }
 
-export async function updateSeason(id: number, s: Season) {
+export async function updateSeason(id: number, s: Partial<Season>) {
   const updatedSeason = await db
     .update(season)
-    .set({ name: s.name })
+    .set({ ...(s.name ? { name: s.name } : {}) })
     .where(eq(season.id, id))
     .returning();
   revalidatePath("/");

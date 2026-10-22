@@ -1,41 +1,42 @@
-"use server";
-
-import { getMatchesForTournament } from "@/actions/matches";
-import { loadAllTeams } from "@/actions/teams";
 import { getAllTournaments } from "@/actions/tournaments";
-import CreateTournamentButton from "@/components/CreateTournametButton";
-import TournamentDetailsButton from "@/components/TournametDetailsButton";
+import { getSeasonById } from "@/actions/seasons";
+import Link from "next/link";
 
-export default async function Home() {
+export default async function TournamentsPage() {
   const tournaments = await getAllTournaments();
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-2xl font-bold mb-4">Tournaments</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {tournaments.map(async (tournament) => (
+    <div className="p-8 max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Všechny turnaje</h1>
+        <Link href="/seasons" className="btn btn-outline btn-sm">
+          Přejít na sezóny
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tournaments.map(async (t) => {
+          const s = await getSeasonById(t.seasonId);
+          return (
             <div
-              className="card bg-base-100 w-96 shadow-xl"
-              key={tournament.id}
+              className="card bg-base-100 shadow-xl border border-base-300"
+              key={t.id}
             >
               <div className="card-body">
-                <h2 className="card-title">{tournament.name}</h2>
-                <p>
-                  Počet týmů: {(await loadAllTeams(tournament.id)).length}
-                  <br />
-                  Počet zápasů:
-                  {(await getMatchesForTournament(tournament.id)).length}
+                <h2 className="card-title">{t.name}</h2>
+                <p className="text-base-content/70">
+                  Sezóna: {s?.name ?? "-"}
                 </p>
-                <div className="card-actions justify-end">
-                  <TournamentDetailsButton id={tournament.id} />
+                <div className="card-actions justify-end mt-4">
+                  <Link
+                    href={`/seasons/${t.seasonId}/tournaments`}
+                    className="btn btn-primary btn-sm"
+                  >
+                    Zobrazit turnaj
+                  </Link>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </main>
-      <div className="fixed bottom-8 right-8">
-        <CreateTournamentButton />
+          );
+        })}
       </div>
     </div>
   );

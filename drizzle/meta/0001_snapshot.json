@@ -1,5 +1,5 @@
 {
-  "id": "46c81fdc-2eaf-4e88-9ffe-4ebeb2871a9c",
+  "id": "c0fbe059-1e48-4ce2-a28e-5a82c9693d91",
   "prevId": "bb13c7d0-c582-4f57-9b3f-76957aaac64c",
   "version": "7",
   "dialect": "postgresql",
@@ -14,39 +14,92 @@
           "primaryKey": true,
           "notNull": true
         },
-        "submit_datetime": {
-          "name": "submit_datetime",
+        "round_id": {
+          "name": "round_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team1_id": {
+          "name": "team1_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team2_id": {
+          "name": "team2_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team1_score": {
+          "name": "team1_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "team2_score": {
+          "name": "team2_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'completed'"
+        },
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "round_number": {
-          "name": "round_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "tournament_id": {
-          "name": "tournament_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "match_tournament_id_tournament_id_fk": {
-          "name": "match_tournament_id_tournament_id_fk",
+        "match_round_id_round_id_fk": {
+          "name": "match_round_id_round_id_fk",
           "tableFrom": "match",
-          "tableTo": "tournament",
+          "tableTo": "round",
           "columnsFrom": [
-            "tournament_id"
+            "round_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "match_team1_id_team_id_fk": {
+          "name": "match_team1_id_team_id_fk",
+          "tableFrom": "match",
+          "tableTo": "team",
+          "columnsFrom": [
+            "team1_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "match_team2_id_team_id_fk": {
+          "name": "match_team2_id_team_id_fk",
+          "tableFrom": "match",
+          "tableTo": "team",
+          "columnsFrom": [
+            "team2_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -67,16 +120,52 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "season_id": {
+          "name": "season_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "player_season_id_season_id_fk": {
+          "name": "player_season_id_season_id_fk",
+          "tableFrom": "player",
+          "tableTo": "season",
+          "columnsFrom": [
+            "season_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "player_season_name_unq": {
+          "name": "player_season_name_unq",
+          "nullsNotDistinct": false,
+          "columns": [
+            "season_id",
+            "name"
+          ]
+        }
+      }
     },
-    "public.player_tournament": {
-      "name": "player_tournament",
+    "public.player_match_score": {
+      "name": "player_match_score",
       "schema": "",
       "columns": {
         "id": {
@@ -85,104 +174,44 @@
           "primaryKey": true,
           "notNull": true
         },
+        "match_id": {
+          "name": "match_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
         "player_id": {
           "name": "player_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "team_tournament_id": {
-          "name": "team_tournament_id",
+        "team_id": {
+          "name": "team_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "player_tournament_player_id_player_id_fk": {
-          "name": "player_tournament_player_id_player_id_fk",
-          "tableFrom": "player_tournament",
-          "tableTo": "player",
-          "columnsFrom": [
-            "player_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "player_tournament_team_tournament_id_team_tournament_id_fk": {
-          "name": "player_tournament_team_tournament_id_team_tournament_id_fk",
-          "tableFrom": "player_tournament",
-          "tableTo": "team_tournament",
-          "columnsFrom": [
-            "team_tournament_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.score": {
-      "name": "score",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
           "notNull": true
         },
         "score": {
           "name": "score",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": 0
         },
-        "bonus_score": {
-          "name": "bonus_score",
+        "blowjobs": {
+          "name": "blowjobs",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
-        },
-        "player_id": {
-          "name": "player_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "match_id": {
-          "name": "match_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "score_player_id_player_id_fk": {
-          "name": "score_player_id_player_id_fk",
-          "tableFrom": "score",
-          "tableTo": "player",
-          "columnsFrom": [
-            "player_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "score_match_id_match_id_fk": {
-          "name": "score_match_id_match_id_fk",
-          "tableFrom": "score",
+        "player_match_score_match_id_match_id_fk": {
+          "name": "player_match_score_match_id_match_id_fk",
+          "tableFrom": "player_match_score",
           "tableTo": "match",
           "columnsFrom": [
             "match_id"
@@ -190,7 +219,98 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "player_match_score_player_id_player_id_fk": {
+          "name": "player_match_score_player_id_player_id_fk",
+          "tableFrom": "player_match_score",
+          "tableTo": "player",
+          "columnsFrom": [
+            "player_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "player_match_score_team_id_team_id_fk": {
+          "name": "player_match_score_team_id_team_id_fk",
+          "tableFrom": "player_match_score",
+          "tableTo": "team",
+          "columnsFrom": [
+            "team_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "match_player_unq": {
+          "name": "match_player_unq",
+          "nullsNotDistinct": false,
+          "columns": [
+            "match_id",
+            "player_id"
+          ]
+        }
+      }
+    },
+    "public.round": {
+      "name": "round",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "round_number": {
+          "name": "round_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "tournament_id": {
+          "name": "tournament_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "round_tournament_id_tournament_id_fk": {
+          "name": "round_tournament_id_tournament_id_fk",
+          "tableFrom": "round",
+          "tableTo": "tournament",
+          "columnsFrom": [
+            "tournament_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -211,10 +331,10 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "create_time": {
-          "name": "create_time",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -240,16 +360,52 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "season_id": {
+          "name": "season_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "team_season_id_season_id_fk": {
+          "name": "team_season_id_season_id_fk",
+          "tableFrom": "team",
+          "tableTo": "season",
+          "columnsFrom": [
+            "season_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "team_season_name_unq": {
+          "name": "team_season_name_unq",
+          "nullsNotDistinct": false,
+          "columns": [
+            "season_id",
+            "name"
+          ]
+        }
+      }
     },
-    "public.team_match_score": {
-      "name": "team_match_score",
+    "public.team_player": {
+      "name": "team_player",
       "schema": "",
       "columns": {
         "id": {
@@ -258,110 +414,43 @@
           "primaryKey": true,
           "notNull": true
         },
-        "score_team1": {
-          "name": "score_team1",
+        "round_id": {
+          "name": "round_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
-        },
-        "score_team2": {
-          "name": "score_team2",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "match_id": {
-          "name": "match_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "team1_id": {
-          "name": "team1_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "team2_id": {
-          "name": "team2_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "team_match_score_match_id_match_id_fk": {
-          "name": "team_match_score_match_id_match_id_fk",
-          "tableFrom": "team_match_score",
-          "tableTo": "match",
-          "columnsFrom": [
-            "match_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "team_match_score_team1_id_team_id_fk": {
-          "name": "team_match_score_team1_id_team_id_fk",
-          "tableFrom": "team_match_score",
-          "tableTo": "team",
-          "columnsFrom": [
-            "team1_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "team_match_score_team2_id_team_id_fk": {
-          "name": "team_match_score_team2_id_team_id_fk",
-          "tableFrom": "team_match_score",
-          "tableTo": "team",
-          "columnsFrom": [
-            "team2_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.team_tournament": {
-      "name": "team_tournament",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
           "notNull": true
         },
         "team_id": {
           "name": "team_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "tournament_id": {
-          "name": "tournament_id",
+        "player_id": {
+          "name": "player_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "team_tournament_team_id_team_id_fk": {
-          "name": "team_tournament_team_id_team_id_fk",
-          "tableFrom": "team_tournament",
+        "team_player_round_id_round_id_fk": {
+          "name": "team_player_round_id_round_id_fk",
+          "tableFrom": "team_player",
+          "tableTo": "round",
+          "columnsFrom": [
+            "round_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "team_player_team_id_team_id_fk": {
+          "name": "team_player_team_id_team_id_fk",
+          "tableFrom": "team_player",
           "tableTo": "team",
           "columnsFrom": [
             "team_id"
@@ -369,25 +458,34 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "team_tournament_tournament_id_tournament_id_fk": {
-          "name": "team_tournament_tournament_id_tournament_id_fk",
-          "tableFrom": "team_tournament",
-          "tableTo": "tournament",
+        "team_player_player_id_player_id_fk": {
+          "name": "team_player_player_id_player_id_fk",
+          "tableFrom": "team_player",
+          "tableTo": "player",
           "columnsFrom": [
-            "tournament_id"
+            "player_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "round_player_unq": {
+          "name": "round_player_unq",
+          "nullsNotDistinct": false,
+          "columns": [
+            "round_id",
+            "player_id"
+          ]
+        }
+      }
     },
     "public.tournament": {
       "name": "tournament",
@@ -403,13 +501,20 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "season_id": {
           "name": "season_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -424,7 +529,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

@@ -1,6 +1,6 @@
 "use server";
-import { tournament } from "@/db/schema";
-import { eq } from "drizzle-orm"; // Replace "some-library" with the actual library name
+import { tournament, season } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "../../db";
@@ -18,11 +18,28 @@ export async function createTournament(formData: FormData) {
   if (vysledek.length > 0) {
     return { error: "Turnaj s tímto jménem již existuje" };
   } else {
+    let seasonId = 1;
+    const latestSeason = await db
+      .select({ id: season.id })
+      .from(season)
+      .orderBy(desc(season.id))
+      .limit(1);
+
+    if (latestSeason[0]) {
+      seasonId = latestSeason[0].id;
+    } else {
+      const [newS] = await db
+        .insert(season)
+        .values({ name: "Výchozí sezóna" })
+        .returning();
+      seasonId = newS.id;
+    }
+
     const result = await db
       .insert(tournament)
-      .values({ name: tournamentName })
+      .values({ name: tournamentName, seasonId })
       .returning({ insertedId: tournament.id });
     revalidatePath("/");
-    redirect("/" + result[0].insertedId);
+    redirect(`/seasons/${seasonId}/tournaments`);
   }
 }

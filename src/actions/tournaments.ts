@@ -2,47 +2,66 @@
 
 import { db } from "@/db";
 import { tournament } from "@/db/schema";
+import { Tournament } from "@/db/types";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function getAllTournaments() {
-  const tournaments = await db.select().from(tournament);
-  return tournaments;
+  return db.select().from(tournament);
 }
 
-export async function createTournament(name: string) {
-  const newTournament = await db
-    .insert(tournament)
-    .values({ name })
-    .returning();
-  revalidatePath("/seasons/[seasonId]/tournaments");
-  return newTournament[0];
+export async function getTournamentsForSeason(seasonId: number) {
+  return db
+    .select()
+    .from(tournament)
+    .where(eq(tournament.seasonId, seasonId));
 }
 
 export async function getTournamentById(id: number) {
-  const tournamentData = await db
+  const result = await db
     .select()
     .from(tournament)
     .where(eq(tournament.id, id))
     .limit(1);
-  return tournamentData[0];
+  return result[0];
 }
 
-export async function updateTournament(id: number, name: string) {
-  const updatedTournament = await db
+export async function createTournament(data: {
+  name: string;
+  seasonId: number;
+}) {
+  const result = await db
+    .insert(tournament)
+    .values({
+      name: data.name,
+      seasonId: data.seasonId,
+    })
+    .returning();
+  revalidatePath("/");
+  return result[0];
+}
+
+export async function updateTournament(
+  id: number,
+  data: Partial<Tournament>
+) {
+  const result = await db
     .update(tournament)
-    .set({ name })
+    .set({
+      ...(data.name ? { name: data.name } : {}),
+      ...(data.seasonId ? { seasonId: data.seasonId } : {}),
+    })
     .where(eq(tournament.id, id))
     .returning();
-  revalidatePath("/seasons/[seasonId]/tournaments");
-  return updatedTournament[0];
+  revalidatePath("/");
+  return result[0];
 }
 
 export async function deleteTournament(id: number) {
-  const deletedTournament = await db
+  const result = await db
     .delete(tournament)
     .where(eq(tournament.id, id))
     .returning();
-  revalidatePath("/seasons/[seasonId]/tournaments");
-  return deletedTournament[0];
+  revalidatePath("/");
+  return result[0];
 }

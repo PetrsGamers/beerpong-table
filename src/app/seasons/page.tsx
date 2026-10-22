@@ -6,11 +6,11 @@ import {
   updateSeason,
 } from "@/actions/seasons";
 import { CrudPage } from "@/components/CrudComponents/CrudPage";
-import { NewSeason } from "@/db/types";
+import { Season } from "@/db/types";
 
 export default function SeasonsPage() {
   return (
-    <CrudPage
+    <CrudPage<Season>
       title="Seasons"
       fetchData={getAllSeasons}
       columns={[
@@ -19,18 +19,20 @@ export default function SeasonsPage() {
           label: "Name",
           required: true,
           type: "string",
-          link: "/seasons/[seasonId]",
+          link: "/seasons/[id]",
         },
         {
-          key: "createTime",
-          label: "created at",
+          key: "createdAt",
+          label: "Created at",
           required: false,
           type: "date",
         },
       ]}
-      createAction={async (season: NewSeason) => {
+      createAction={async (item) => {
         "use server";
-        await createSeason(season);
+        if (item.name) {
+          await createSeason({ name: item.name });
+        }
       }}
       editAction={async (item) => {
         "use server";

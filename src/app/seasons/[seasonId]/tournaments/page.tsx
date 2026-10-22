@@ -1,45 +1,51 @@
-// app/seasons/page.tsx
 import {
-  createSeason,
-  deleteSeason,
-  getAllSeasons,
-  updateSeason,
-} from "@/actions/seasons";
-import { getAllTournaments } from "@/actions/tournaments";
+  createTournament,
+  deleteTournament,
+  getTournamentsForSeason,
+  updateTournament,
+} from "@/actions/tournaments";
 import { CrudPage } from "@/components/CrudComponents/CrudPage";
-import { NewSeason } from "@/db/types";
+import { Tournament } from "@/db/types";
 
-export default function TournamentsPage() {
+export default function TournamentsPage({
+  params,
+}: {
+  params: { seasonId: string };
+}) {
+  const seasonId = Number(params.seasonId);
+
   return (
-    <CrudPage
-      title="Tournaments"
-      fetchData={getAllTournaments}
+    <CrudPage<Tournament>
+      title="Turnaje sezóny"
+      fetchData={() => getTournamentsForSeason(seasonId)}
       columns={[
         {
           key: "name",
-          label: "Name",
+          label: "Název turnaje",
           required: true,
           type: "string",
-          link: "/seasons/[seasonId]/tournaments/[tournamentId]",
+          link: `/seasons/${seasonId}/tournaments/[id]`,
         },
         {
-          key: "createTime",
-          label: "created at",
+          key: "createdAt",
+          label: "Vytvořeno",
           required: false,
           type: "date",
         },
       ]}
-      createAction={async (season: NewSeason) => {
+      createAction={async (item) => {
         "use server";
-        await createSeason(season);
+        if (item.name) {
+          await createTournament({ name: item.name, seasonId });
+        }
       }}
       editAction={async (item) => {
         "use server";
-        await updateSeason(item.id, item);
+        await updateTournament(item.id, item);
       }}
       deleteAction={async (id) => {
         "use server";
-        await deleteSeason(id);
+        await deleteTournament(id);
       }}
     />
   );

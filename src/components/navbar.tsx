@@ -6,27 +6,26 @@ import Link from "next/link";
 export const Navbar = async () => {
   const session = await getSession();
   return (
-    <div className="navbar sticky top-0 z-50 bg-black/30 backdrop-blur-sm">
-      <div className="flex-1">
-        <a href="/" className="btn btn-ghost text-xl">
+    <div className="navbar sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10 px-4">
+      <div className="flex-1 flex items-center gap-6">
+        <Link href="/" className="btn btn-ghost text-xl font-bold">
           🦊 SPPDF BeerPong
-        </a>
+        </Link>
+        <div className="hidden md:flex gap-2">
+          <Link href="/seasons" className="btn btn-ghost btn-sm">
+            Sezóny
+          </Link>
+          <Link href="/tournaments" className="btn btn-ghost btn-sm">
+            Turnaje
+          </Link>
+        </div>
       </div>
       <div className="navbar-end flex-none">
-        <ul className="menu menu-horizontal px-1">
-          {session?.userId! && (
-            <li>
-              {/* <Link href="/idkyet">Nejaky random link tady </Link> */}
-            </li>
-          )}
-        </ul>
-      </div>
-      <div className="">
-        <a href="/login" className="btn btn-square btn-ghost">
+        <Link href="/login" className="btn btn-square btn-ghost">
           <svg
             fill="#eee"
-            height="16px"
-            width="16px"
+            height="18px"
+            width="18px"
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +50,7 @@ export const Navbar = async () => {
               />
             </g>
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );

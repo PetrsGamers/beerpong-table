@@ -1,18 +1,17 @@
-"use server";
+import { getTournamentById } from "@/actions/tournaments";
+import { redirect } from "next/navigation";
 
-import { getTeamsForTournament } from "@/actions/teams";
-
-export default async function Home(params: {
-  params: { tournamentid: number };
+export default async function LegacyTeamsRedirect({
+  params,
+}: {
+  params: { tournamentid: string };
 }) {
-  const teams = await getTeamsForTournament(params.params.tournamentid);
-  console.log(teams);
-  return (
-    <div>
-      tymy: {params.params.tournamentid}
-      {teams.map((team) => (
-        <div key={team.id}>{team.name}</div>
-      ))}
-    </div>
-  );
+  const tournamentId = Number(params.tournamentid);
+  if (!isNaN(tournamentId)) {
+    const t = await getTournamentById(tournamentId);
+    if (t?.seasonId) {
+      redirect(`/seasons/${t.seasonId}/tournaments/${tournamentId}`);
+    }
+  }
+  redirect("/tournaments");
 }
