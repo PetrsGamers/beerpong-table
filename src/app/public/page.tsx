@@ -56,7 +56,7 @@ export default async function PublicOverviewPage() {
 
   return (
     <div className="min-h-screen px-3 py-6 sm:px-6 sm:py-10 md:p-12">
-      <main className="mx-auto w-full max-w-[1280px] flex flex-col gap-6 sm:gap-10 md:gap-12 items-center">
+      <main className="mx-auto w-full max-w-[1280px] flex flex-col gap-6 sm:gap-8 md:gap-10 items-center">
         
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-3 tracking-tight">
@@ -69,36 +69,62 @@ export default async function PublicOverviewPage() {
 
         {/* Turnaje List */}
         <section className="w-full">
-          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-6">Turnaje</h2>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6 md:gap-8 justify-items-stretch">
-            {tournaments.map((t: any) => (
-              <div key={t.id} className="card bg-base-100 w-full shadow-lg border border-base-200 hover:border-primary/50 transition-all">
-                <div className="card-body p-4 sm:p-6 flex flex-row sm:flex-col justify-between items-center sm:items-start gap-3">
-                  <h3 className="card-title text-base sm:text-lg font-bold">{t.name}</h3>
-                  <div className="card-actions justify-end">
-                    <Link href={`/public/${t.id}`} className="btn btn-primary btn-sm sm:btn-md">
-                      Zobrazit výsledky
-                    </Link>
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Turnaje a turnajové večery</h2>
+            <span className="badge badge-neutral text-xs font-semibold px-2.5 py-1">
+              {tournaments.length} {tournaments.length === 1 ? "turnaj" : tournaments.length >= 2 && tournaments.length <= 4 ? "turnaje" : "turnajů"}
+            </span>
+          </div>
+
+          <div className="card bg-base-100 w-full shadow-lg border border-base-200 overflow-hidden">
+            <div className="divide-y divide-base-200">
+              {tournaments.map((t: any, idx: number) => (
+                <div
+                  key={t.id}
+                  className="p-3.5 sm:p-4 hover:bg-base-200/50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4"
+                >
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span className="badge badge-neutral font-black text-xs w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 tabular-nums">
+                      {idx + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-base sm:text-lg text-base-content truncate">
+                        {t.name}
+                      </h3>
+                      <p className="text-xs text-base-content/60">
+                        Turnajový večer
+                      </p>
+                    </div>
                   </div>
+
+                  <Link
+                    href={`/public/${t.id}`}
+                    className="btn btn-primary btn-sm sm:btn-md gap-1.5 shrink-0 self-end sm:self-center"
+                  >
+                    <span>Zobrazit výsledky</span>
+                    <span className="text-sm font-bold">→</span>
+                  </Link>
                 </div>
-              </div>
-            ))}
-            {tournaments.length === 0 && (
-              <p className="text-base-content/60 italic py-4">Zatím nebyly vytvořeny žádné turnaje.</p>
-            )}
+              ))}
+              {tournaments.length === 0 && (
+                <div className="p-8 text-center text-base-content/60 italic">
+                  Zatím nebyly vytvořeny žádné turnaje.
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
         {/* Combined Stats */}
         {combinedData && combinedData.tournaments.length > 0 && (
-          <section className="w-full mt-2 sm:mt-6">
-            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-6">Celkové Statistiky</h2>
+          <section className="w-full mt-2 sm:mt-4">
+            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Celkové Statistiky</h2>
 
-            <div className="flex flex-col gap-4 sm:gap-8 w-full items-center">
+            <div className="flex flex-col gap-4 sm:gap-6 w-full">
               
               {/* Combined Teams */}
               <div className="card bg-base-100 w-full shadow-lg border border-base-200">
-                <div className="card-body p-3 sm:p-6">
+                <div className="card-body p-3.5 sm:p-6">
                   <h3 className="card-title text-base sm:text-xl justify-center mb-3">Celkové Týmové Pořadí</h3>
                   <div className="overflow-x-auto w-full">
                     <table className="table table-sm sm:table-md w-full">
@@ -144,10 +170,11 @@ export default async function PublicOverviewPage() {
                 </div>
               </div>
 
-              <div className="w-full flex flex-col xl:flex-row gap-4 sm:gap-6 xl:gap-8 justify-center items-start">
+              {/* Individual Rankings: Král střelců & BlowJob King spanning 100% width aligned with teams table */}
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Combined Players - Score */}
-                <div className="card bg-base-100 w-full xl:max-w-xl shadow-lg border border-base-200">
-                  <div className="card-body p-3 sm:p-6">
+                <div className="card bg-base-100 w-full shadow-lg border border-base-200">
+                  <div className="card-body p-3.5 sm:p-6">
                     <h3 className="card-title text-base sm:text-xl justify-center mb-3">Historicky Král střelců</h3>
                     <div className="overflow-x-auto w-full">
                       <table className="table table-sm sm:table-md w-full">
@@ -184,8 +211,8 @@ export default async function PublicOverviewPage() {
                 </div>
 
                 {/* Combined Players - BJ */}
-                <div className="card bg-base-100 w-full xl:max-w-xl shadow-lg border border-base-200">
-                  <div className="card-body p-3 sm:p-6">
+                <div className="card bg-base-100 w-full shadow-lg border border-base-200">
+                  <div className="card-body p-3.5 sm:p-6">
                     <h3 className="card-title text-base sm:text-xl justify-center mb-3">Historicky BlowJob King</h3>
                     <div className="overflow-x-auto w-full">
                       <table className="table table-sm sm:table-md w-full">

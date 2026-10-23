@@ -84,10 +84,10 @@ export default async function PublicTournamentPage({
           {tournament.name}
         </h1>
 
-        <div className="w-full flex flex-col xl:flex-row gap-4 sm:gap-6 xl:gap-8 justify-center items-start">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
           
           {/* Týmové pořadí */}
-          <div className="card bg-base-100 w-full xl:max-w-xl shadow-xl border border-base-200">
+          <div className="card bg-base-100 w-full shadow-xl border border-base-200">
             <div className="card-body p-3.5 sm:p-6">
               <h2 className="card-title text-base sm:text-xl font-bold justify-center mb-2 sm:mb-4">Celkové skóre</h2>
               {teamsOrdered.length === 0 ? (
@@ -117,7 +117,7 @@ export default async function PublicTournamentPage({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 sm:gap-6 w-full xl:max-w-xl">
+          <div className="flex flex-col gap-4 sm:gap-6 w-full">
             {/* Král střelců */}
             <div className="card bg-base-100 w-full shadow-xl border border-base-200">
               <div className="card-body p-3.5 sm:p-6">
