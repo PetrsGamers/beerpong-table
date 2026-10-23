@@ -164,10 +164,3 @@ export async function deleteMatch(id: number) {
   return deleted;
 }
 
-export async function createNewMatch(...args: any[]) {
-  return null;
-}
-
-export async function getMatchesForTournament(tournamentId: number) {
-  return [];
-}

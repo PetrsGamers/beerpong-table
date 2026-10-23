@@ -1,47 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { player, team, teamPlayer, tournament } from "@/db/schema";
+import { player, team, teamPlayer } from "@/db/schema";
 import { Team } from "@/db/types";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-
-export async function loadAllTeams(tournamentId: number) {
-  const t = await db
-    .select({ seasonId: tournament.seasonId })
-    .from(tournament)
-    .where(eq(tournament.id, tournamentId))
-    .limit(1);
-
-  if (!t[0]) return [];
-
-  const teams = await db
-    .select()
-    .from(team)
-    .where(eq(team.seasonId, t[0].seasonId));
-
-  return teams.map((tm) => ({
-    team: tm,
-    player1: null,
-    player2: null,
-  }));
-}
-
-export const getTeamsForTournament = async (tournamentId: number) => {
-  const t = await db
-    .select({ seasonId: tournament.seasonId })
-    .from(tournament)
-    .where(eq(tournament.id, tournamentId))
-    .limit(1);
-
-  if (!t[0]) return [];
-
-  return db.select().from(team).where(eq(team.seasonId, t[0].seasonId));
-};
-
-export const getTeamsForTournamentSorted = async (tournamentId: number) => {
-  return getTeamsForTournament(tournamentId);
-};
 
 export async function getTeamsForSeason(seasonId: number) {
   return db.select().from(team).where(eq(team.seasonId, seasonId));
@@ -82,7 +45,7 @@ export async function deleteTeam(id: number) {
   return result[0];
 }
 
-// Přiřazení hráče do týmu v daném kole
+// Přiřazení hráče do týmu v daném kole (večeru)
 export async function assignPlayerToTeamInRound(
   roundId: number,
   teamId: number,
@@ -123,7 +86,7 @@ export async function removePlayerFromTeamInRound(
   return result[0];
 }
 
-// Získání soupisky týmu v daném kole
+// Získání soupisky týmů v daném kole
 export async function getTeamPlayersForRound(roundId: number, teamId?: number) {
   const query = db
     .select({

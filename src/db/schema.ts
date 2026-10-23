@@ -4,39 +4,36 @@ import {
   text,
   integer,
   timestamp,
+  boolean,
   unique,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-// 1. Season (Sezóna – např. "Jarní semestr 2025")
+// 1. Season (Sezóna – odpovídá jednomu semestru, např. "Jarní semestr 2025")
+// Vždy běží právě jedna aktivní sezóna (isActive: true). Minulé sezóny slouží jako archiv.
 export const season = pgTable("season", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull(), // např. "Jarní semestr 2025"
+  isActive: boolean("is_active").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-// 2. Tournament (Turnaj – samostatná událost v rámci sezóny, např. "Brno Cup", "1. Kolo")
-export const tournament = pgTable("tournament", {
+// 2. Round (Kolo – jeden turnajový večer v rámci semestru, typicky 1 až 5 kol)
+// 5. kolo bývá typicky Velké Finále.
+export const round = pgTable("round", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull(), // např. "1. Kolo", "2. Kolo", ..., "5. Kolo - Velké Finále"
+  roundNumber: integer("round_number").notNull().default(1),
   seasonId: integer("season_id")
     .notNull()
     .references(() => season.id, { onDelete: "cascade" }),
+  date: timestamp("date"), // Datum a čas konání turnajového večera
+  isCompleted: boolean("is_completed").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-// 3. Round (Kolo – jednotlivá fáze turnaje: 1. kolo, 2. kolo, play-off, ...)
-export const round = pgTable("round", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  roundNumber: integer("round_number").notNull().default(1),
-  tournamentId: integer("tournament_id")
-    .notNull()
-    .references(() => tournament.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-// 4. Team (Tým – vázaný na sezónu, jméno je v rámci sezóny unikátní)
+// 3. Team (Tým – vázaný na sezónu/semestr, jméno je v rámci sezóny unikátní)
+// Tým je perzistentní po celý semestr a nemá na sobě natvrdo zadrátované hráče.
 export const team = pgTable(
   "team",
   {
@@ -52,7 +49,8 @@ export const team = pgTable(
   })
 );
 
-// 5. Player (Hráč – vázaný na sezónu, jméno je v rámci sezóny unikátní, může měnit týmy)
+// 4. Player (Hráč – vázaný na sezónu/semestr, jméno je v rámci sezóny unikátní)
+// Hráč je nezávislý na týmech a může v různých kolech nastoupit za různé týmy.
 export const player = pgTable(
   "player",
   {
@@ -71,7 +69,8 @@ export const player = pgTable(
   })
 );
 
-// 6. TeamPlayer (Složení týmu pro konkrétní kolo – dynamický počet hráčů, flexibilní soupiska)
+// 5. TeamPlayer (Soupiska kola – určení, za jaký tým v daném večeru hráč nastupuje)
+// V jednom kole (večeru) může hráč hrát pouze za 1 tým, ale v dalším kole může nastoupit za jiný.
 export const teamPlayer = pgTable(
   "team_player",
   {
@@ -91,7 +90,7 @@ export const teamPlayer = pgTable(
   })
 );
 
-// 7. Match (Konkrétní utkání mezi dvěma týmy v rámci kola)
+// 6. Match (Zápas mezi dvěma týmy v rámci turnajového večera / kola)
 export const match = pgTable("match", {
   id: serial("id").primaryKey(),
   roundId: integer("round_id")
@@ -109,7 +108,7 @@ export const match = pgTable("match", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-// 8. PlayerMatchScore (Individuální skóre a blowjobs hráčů v konkrétním zápase)
+// 7. PlayerMatchScore (Individuální výkon hráče v konkrétním zápase – kelímky a blowjobs)
 export const playerMatchScore = pgTable(
   "player_match_score",
   {
@@ -123,33 +122,25 @@ export const playerMatchScore = pgTable(
     teamId: integer("team_id")
       .notNull()
       .references(() => team.id, { onDelete: "cascade" }),
-    score: integer("score").notNull().default(0),
-    blowjobs: integer("blowjobs").notNull().default(0),
+    score: integer("score").notNull().default(0), // trefené kelímky
+    blowjobs: integer("blowjobs").notNull().default(0), // úspěšně vyfouknuté kelímky
   },
   (t) => ({
     matchPlayerUnq: unique("match_player_unq").on(t.matchId, t.playerId),
   })
 );
 
-// Drizzle Relations
+// Relace (Drizzle ORM Relations)
 export const seasonRelations = relations(season, ({ many }) => ({
-  tournaments: many(tournament),
+  rounds: many(round),
   teams: many(team),
   players: many(player),
 }));
 
-export const tournamentRelations = relations(tournament, ({ one, many }) => ({
-  season: one(season, {
-    fields: [tournament.seasonId],
-    references: [season.id],
-  }),
-  rounds: many(round),
-}));
-
 export const roundRelations = relations(round, ({ one, many }) => ({
-  tournament: one(tournament, {
-    fields: [round.tournamentId],
-    references: [tournament.id],
+  season: one(season, {
+    fields: [round.seasonId],
+    references: [season.id],
   }),
   matches: many(match),
   teamPlayers: many(teamPlayer),
@@ -163,7 +154,6 @@ export const teamRelations = relations(team, ({ one, many }) => ({
   teamPlayers: many(teamPlayer),
   matchesAsTeam1: many(match, { relationName: "team1Matches" }),
   matchesAsTeam2: many(match, { relationName: "team2Matches" }),
-  playerScores: many(playerMatchScore),
 }));
 
 export const playerRelations = relations(player, ({ one, many }) => ({
@@ -172,7 +162,7 @@ export const playerRelations = relations(player, ({ one, many }) => ({
     references: [season.id],
   }),
   teamPlayers: many(teamPlayer),
-  matchScores: many(playerMatchScore),
+  scores: many(playerMatchScore),
 }));
 
 export const teamPlayerRelations = relations(teamPlayer, ({ one }) => ({

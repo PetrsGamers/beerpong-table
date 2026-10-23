@@ -1,7 +1,6 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   season,
-  tournament,
   round,
   team,
   player,
@@ -12,9 +11,6 @@ import {
 
 export type Season = InferSelectModel<typeof season>;
 export type NewSeason = InferInsertModel<typeof season>;
-
-export type Tournament = InferSelectModel<typeof tournament>;
-export type NewTournament = InferInsertModel<typeof tournament>;
 
 export type Round = InferSelectModel<typeof round>;
 export type NewRound = InferInsertModel<typeof round>;

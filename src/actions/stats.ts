@@ -7,7 +7,6 @@ import {
   playerMatchScore,
   round,
   team,
-  tournament,
 } from "@/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
 
@@ -30,8 +29,8 @@ export async function getPlayerScoresForMatch(matchId: number) {
     .where(eq(playerMatchScore.matchId, matchId));
 }
 
-// 2. Žebříček hráčů v rámci turnaje (Král střelců & BlowJob King)
-export async function getTournamentPlayerLeaderboard(tournamentId: number) {
+// 2. Žebříček hráčů v rámci kola / večera (Král střelců & BlowJob King večera)
+export async function getRoundPlayerLeaderboard(roundId: number) {
   return db
     .select({
       playerId: player.id,
@@ -43,8 +42,7 @@ export async function getTournamentPlayerLeaderboard(tournamentId: number) {
     .from(player)
     .innerJoin(playerMatchScore, eq(player.id, playerMatchScore.playerId))
     .innerJoin(match, eq(playerMatchScore.matchId, match.id))
-    .innerJoin(round, eq(match.roundId, round.id))
-    .where(eq(round.tournamentId, tournamentId))
+    .where(eq(match.roundId, roundId))
     .groupBy(player.id, player.name)
     .orderBy(
       desc(sql`SUM(${playerMatchScore.score})`),
@@ -52,7 +50,7 @@ export async function getTournamentPlayerLeaderboard(tournamentId: number) {
     );
 }
 
-// 3. Žebříček hráčů v rámci celé sezóny (Král střelců & BlowJob King za sezónu)
+// 3. Žebříček hráčů v rámci celé sezóny / semestru (Král střelců & BlowJob King semestru)
 export async function getSeasonPlayerLeaderboard(seasonId: number) {
   return db
     .select({
@@ -66,8 +64,7 @@ export async function getSeasonPlayerLeaderboard(seasonId: number) {
     .innerJoin(playerMatchScore, eq(player.id, playerMatchScore.playerId))
     .innerJoin(match, eq(playerMatchScore.matchId, match.id))
     .innerJoin(round, eq(match.roundId, round.id))
-    .innerJoin(tournament, eq(round.tournamentId, tournament.id))
-    .where(eq(tournament.seasonId, seasonId))
+    .where(eq(round.seasonId, seasonId))
     .groupBy(player.id, player.name)
     .orderBy(
       desc(sql`SUM(${playerMatchScore.score})`),
@@ -88,9 +85,9 @@ export type TeamStanding = {
   points: number;
 };
 
-// 4. Tabulka týmů pro turnaj
-export async function getTournamentTeamStandings(
-  tournamentId: number
+// 4. Tabulka týmů pro konkrétní kolo / turnajový večer
+export async function getRoundTeamStandings(
+  roundId: number
 ): Promise<TeamStanding[]> {
   const matches = await db
     .select({
@@ -99,73 +96,14 @@ export async function getTournamentTeamStandings(
       team2Id: match.team2Id,
       team1Score: match.team1Score,
       team2Score: match.team2Score,
-      status: match.status,
     })
     .from(match)
-    .innerJoin(round, eq(match.roundId, round.id))
-    .where(eq(round.tournamentId, tournamentId));
+    .where(eq(match.roundId, roundId));
 
-  const allTeams = await db.select().from(team);
-  const teamMap = new Map<number, string>(allTeams.map((t) => [t.id, t.name]));
-
-  const standingsMap = new Map<number, TeamStanding>();
-
-  function getOrCreate(teamId: number): TeamStanding {
-    if (!standingsMap.has(teamId)) {
-      standingsMap.set(teamId, {
-        teamId,
-        teamName: teamMap.get(teamId) ?? `Tým #${teamId}`,
-        played: 0,
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        cupsScored: 0,
-        cupsConceded: 0,
-        cupDiff: 0,
-        points: 0,
-      });
-    }
-    return standingsMap.get(teamId)!;
-  }
-
-  for (const m of matches) {
-    const t1 = getOrCreate(m.team1Id);
-    const t2 = getOrCreate(m.team2Id);
-
-    t1.played += 1;
-    t2.played += 1;
-    t1.cupsScored += m.team1Score;
-    t1.cupsConceded += m.team2Score;
-    t2.cupsScored += m.team2Score;
-    t2.cupsConceded += m.team1Score;
-
-    if (m.team1Score > m.team2Score) {
-      t1.wins += 1;
-      t1.points += 2;
-      t2.losses += 1;
-    } else if (m.team2Score > m.team1Score) {
-      t2.wins += 1;
-      t2.points += 2;
-      t1.losses += 1;
-    } else {
-      t1.draws += 1;
-      t1.points += 1;
-      t2.draws += 1;
-      t2.points += 1;
-    }
-
-    t1.cupDiff = t1.cupsScored - t1.cupsConceded;
-    t2.cupDiff = t2.cupsScored - t2.cupsConceded;
-  }
-
-  return Array.from(standingsMap.values()).sort((a, b) => {
-    if (b.points !== a.points) return b.points - a.points;
-    if (b.cupDiff !== a.cupDiff) return b.cupDiff - a.cupDiff;
-    return b.cupsScored - a.cupsScored;
-  });
+  return calculateStandings(matches);
 }
 
-// 5. Celková tabulka týmů pro sezónu
+// 5. Celková ligová tabulka týmů pro celou sezónu / semestr (součet za všech 5 kol)
 export async function getSeasonTeamStandings(
   seasonId: number
 ): Promise<TeamStanding[]> {
@@ -176,54 +114,79 @@ export async function getSeasonTeamStandings(
       team2Id: match.team2Id,
       team1Score: match.team1Score,
       team2Score: match.team2Score,
-      status: match.status,
     })
     .from(match)
     .innerJoin(round, eq(match.roundId, round.id))
-    .innerJoin(tournament, eq(round.tournamentId, tournament.id))
-    .where(eq(tournament.seasonId, seasonId));
+    .where(eq(round.seasonId, seasonId));
 
-  const seasonTeams = await db
-    .select()
-    .from(team)
-    .where(eq(team.seasonId, seasonId));
+  return calculateStandings(matches);
+}
+
+// Pomocná funkce pro výpočet ligové tabulky (3 body výhra, 1 remíza, 0 prohra)
+async function calculateStandings(
+  matches: {
+    matchId: number;
+    team1Id: number;
+    team2Id: number;
+    team1Score: number;
+    team2Score: number;
+  }[]
+): Promise<TeamStanding[]> {
+  const allTeams = await db.select().from(team);
+  const teamMap = new Map<number, string>(allTeams.map((t) => [t.id, t.name]));
 
   const standingsMap = new Map<number, TeamStanding>();
 
-  for (const t of seasonTeams) {
-    standingsMap.set(t.id, {
-      teamId: t.id,
-      teamName: t.name,
-      played: 0,
-      wins: 0,
-      draws: 0,
-      losses: 0,
-      cupsScored: 0,
-      cupsConceded: 0,
-      cupDiff: 0,
-      points: 0,
-    });
-  }
-
   for (const m of matches) {
-    const t1 = standingsMap.get(m.team1Id);
-    const t2 = standingsMap.get(m.team2Id);
-    if (!t1 || !t2) continue;
+    if (!standingsMap.has(m.team1Id)) {
+      standingsMap.set(m.team1Id, {
+        teamId: m.team1Id,
+        teamName: teamMap.get(m.team1Id) ?? `Tým #${m.team1Id}`,
+        played: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        cupsScored: 0,
+        cupsConceded: 0,
+        cupDiff: 0,
+        points: 0,
+      });
+    }
+
+    if (!standingsMap.has(m.team2Id)) {
+      standingsMap.set(m.team2Id, {
+        teamId: m.team2Id,
+        teamName: teamMap.get(m.team2Id) ?? `Tým #${m.team2Id}`,
+        played: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        cupsScored: 0,
+        cupsConceded: 0,
+        cupDiff: 0,
+        points: 0,
+      });
+    }
+
+    const t1 = standingsMap.get(m.team1Id)!;
+    const t2 = standingsMap.get(m.team2Id)!;
 
     t1.played += 1;
     t2.played += 1;
+
     t1.cupsScored += m.team1Score;
     t1.cupsConceded += m.team2Score;
+
     t2.cupsScored += m.team2Score;
     t2.cupsConceded += m.team1Score;
 
     if (m.team1Score > m.team2Score) {
       t1.wins += 1;
-      t1.points += 2;
+      t1.points += 3;
       t2.losses += 1;
-    } else if (m.team2Score > m.team1Score) {
+    } else if (m.team1Score < m.team2Score) {
       t2.wins += 1;
-      t2.points += 2;
+      t2.points += 3;
       t1.losses += 1;
     } else {
       t1.draws += 1;
@@ -231,12 +194,15 @@ export async function getSeasonTeamStandings(
       t2.draws += 1;
       t2.points += 1;
     }
-
-    t1.cupDiff = t1.cupsScored - t1.cupsConceded;
-    t2.cupDiff = t2.cupsScored - t2.cupsConceded;
   }
 
-  return Array.from(standingsMap.values()).sort((a, b) => {
+  const list = Array.from(standingsMap.values());
+
+  for (const t of list) {
+    t.cupDiff = t.cupsScored - t.cupsConceded;
+  }
+
+  return list.sort((a, b) => {
     if (b.points !== a.points) return b.points - a.points;
     if (b.cupDiff !== a.cupDiff) return b.cupDiff - a.cupDiff;
     return b.cupsScored - a.cupsScored;

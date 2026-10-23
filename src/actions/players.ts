@@ -1,34 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { player, tournament } from "@/db/schema";
+import { player } from "@/db/schema";
 import { Player } from "@/db/types";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-
-export async function getPlayersForTournamentId(tournamentId: number) {
-  const t = await db
-    .select({ seasonId: tournament.seasonId })
-    .from(tournament)
-    .where(eq(tournament.id, tournamentId))
-    .limit(1);
-
-  if (!t[0]) return [];
-
-  return db.select().from(player).where(eq(player.seasonId, t[0].seasonId));
-}
-
-export async function getPlayersForTeamId(teamId: number) {
-  return [];
-}
-
-export async function addPlayerScoreAndBJ(
-  playerId: number,
-  score: number,
-  blowjobs: number
-) {
-  return null;
-}
 
 export async function getPlayersForSeason(seasonId: number) {
   return db.select().from(player).where(eq(player.seasonId, seasonId));

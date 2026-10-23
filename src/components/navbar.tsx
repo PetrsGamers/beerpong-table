@@ -12,18 +12,18 @@ export const Navbar = async () => {
           🦊 SPPDF BeerPong
         </Link>
         <div className="hidden md:flex gap-2">
-          <Link href="/seasons" className="btn btn-ghost btn-sm">
-            Sezóny
+          <Link href="/" className="btn btn-ghost btn-sm">
+            Aktuální semestr
           </Link>
-          <Link href="/tournaments" className="btn btn-ghost btn-sm">
-            Turnaje
+          <Link href="/seasons" className="btn btn-ghost btn-sm">
+            Archiv semestrů
           </Link>
         </div>
       </div>
       <div className="navbar-end flex-none">
-        <Link href="/login" className="btn btn-square btn-ghost">
+        <Link href="/login" className="btn btn-square btn-ghost" title={session?.isLoggedIn ? "Přihlášen jako admin" : "Přihlášení"}>
           <svg
-            fill="#eee"
+            fill={session?.isLoggedIn ? "#22c55e" : "#eee"}
             height="18px"
             width="18px"
             version="1.1"
