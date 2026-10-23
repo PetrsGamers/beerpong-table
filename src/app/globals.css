@@ -60,6 +60,22 @@
   }
 }
 
+@layer components {
+  /* Konzistentní sizing & pohodlný padding pro všechny badges */
+  .badge {
+    @apply h-auto min-h-[1.5rem] py-1 px-3 inline-flex items-center justify-center font-semibold rounded-full gap-1.5 transition-all;
+  }
+  .badge-sm {
+    @apply min-h-[1.25rem] py-0.5 px-2 text-[11px];
+  }
+  .badge-xs {
+    @apply min-h-[1rem] py-0.5 px-1.5 text-[10px];
+  }
+  .badge-lg {
+    @apply min-h-[2rem] py-1.5 px-4 text-sm font-bold;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
