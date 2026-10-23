@@ -7,22 +7,31 @@ export const dynamic = 'force-dynamic';
 function renderRank(idx: number) {
   if (idx === 0) {
     return (
-      <span className="badge badge-warning font-black text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        1.
+      <span className="badge badge-warning font-black text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">1</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
   if (idx === 1) {
     return (
-      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        2.
+      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">2</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
   if (idx === 2) {
     return (
-      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        3.
+      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">3</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
@@ -51,7 +60,7 @@ export default async function PublicOverviewPage() {
         
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-3 tracking-tight">
-            SPPDF Beer Pong
+            🦊 SPPDF Beer Pong
           </h1>
           <p className="text-base-content/70 text-sm sm:text-base md:text-lg">
             Oficiální výsledky všech turnajů

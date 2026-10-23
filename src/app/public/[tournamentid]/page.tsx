@@ -9,22 +9,31 @@ export const dynamic = 'force-dynamic';
 function renderRank(idx: number) {
   if (idx === 0) {
     return (
-      <span className="badge badge-warning font-black text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        1.
+      <span className="badge badge-warning font-black text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">1</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
   if (idx === 1) {
     return (
-      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        2.
+      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">2</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
   if (idx === 2) {
     return (
-      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
-        3.
+      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 sm:h-7 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+        <span className="relative inline-flex items-center justify-center">
+          <span className="tabular-nums">3</span>
+          <span className="absolute left-full top-0 select-none">.</span>
+        </span>
       </span>
     );
   }
@@ -60,7 +69,7 @@ export default async function PublicTournamentPage({
 
   return (
     <div className="min-h-screen px-3 py-4 sm:px-6 sm:py-8 md:p-10">
-      <div className="w-full max-w-[1280px] mx-auto flex items-center justify-between mb-3 sm:mb-6">
+      <div className="w-full max-w-[1280px] mx-auto flex items-center mb-3 sm:mb-6">
         <Link
           href="/public"
           className="btn btn-ghost btn-sm sm:btn-md gap-1.5 px-2 sm:px-4 text-base-content/80 hover:text-base-content"
@@ -68,7 +77,6 @@ export default async function PublicTournamentPage({
           <span className="text-base">←</span>
           <span className="text-xs sm:text-sm font-semibold">Zpět na přehled</span>
         </Link>
-        <span className="badge badge-neutral text-xs px-2.5 py-1">Veřejné výsledky</span>
       </div>
 
       <main className="mx-auto w-full max-w-[1280px] flex flex-col gap-4 sm:gap-6 md:gap-8 items-center">
