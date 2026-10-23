@@ -11,7 +11,7 @@ export const Navbar = async () => {
     <div className="navbar sticky top-0 z-50 bg-base-100/80 backdrop-blur-md border-b border-base-300 px-4 transition-colors">
       <div className="flex-1 flex items-center gap-4">
         <Link href="/" className="btn btn-ghost text-xl font-black tracking-tight text-base-content">
-          SPPDF BeerPong
+          🦊 SPPDF BeerPong
         </Link>
         <Link
           href="/design-system"

@@ -212,14 +212,49 @@ export default function DesignSystemPage() {
           <h2 className="text-2xl font-black">Odznaky a ligová ocenění</h2>
         </div>
         <p className="text-sm text-base-content/70">
-          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů nebo emojis.
+          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů. Čísla 1., 2. a 3. v odznacích jsou opticky vycentrovaná přesně na číslo (tečka je vyjmuta z toku, takže neposouvá střed čísla doleva).
         </p>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
           <div className="card-body p-6 sm:p-8 flex flex-col gap-6">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Ligová ocenění a pořadí (Velikost: badge-lg)
+                Pořadí v tabulkách (opticky vycentrované na číslo bez započtení tečky)
+              </h3>
+              <div className="flex flex-wrap gap-4 items-center">
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-warning font-black text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                    <span className="relative inline-flex items-center justify-center">
+                      <span className="tabular-nums">1</span>
+                      <span className="absolute left-full top-0 select-none">.</span>
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold">1. místo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                    <span className="relative inline-flex items-center justify-center">
+                      <span className="tabular-nums">2</span>
+                      <span className="absolute left-full top-0 select-none">.</span>
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold">2. místo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                    <span className="relative inline-flex items-center justify-center">
+                      <span className="tabular-nums">3</span>
+                      <span className="absolute left-full top-0 select-none">.</span>
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold">3. místo</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
+                Ligová ocenění a pódiová umístění (Velikost: badge-lg)
               </h3>
               <div className="flex flex-wrap gap-3 items-center">
                 <span className="badge badge-lg bg-warning/20 border border-warning text-warning font-bold">
@@ -552,8 +587,11 @@ export default function DesignSystemPage() {
                 <tbody>
                   <tr className="bg-warning/15 font-bold border-b border-base-300">
                     <td>
-                      <span className="badge badge-warning font-black text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
-                        1.
+                      <span className="badge badge-warning font-black text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                        <span className="relative inline-flex items-center justify-center">
+                          <span className="tabular-nums">1</span>
+                          <span className="absolute left-full top-0 select-none">.</span>
+                        </span>
                       </span>
                     </td>
                     <td className="text-base text-base-content">Vlci</td>
@@ -568,8 +606,11 @@ export default function DesignSystemPage() {
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
                     <td>
-                      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
-                        2.
+                      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                        <span className="relative inline-flex items-center justify-center">
+                          <span className="tabular-nums">2</span>
+                          <span className="absolute left-full top-0 select-none">.</span>
+                        </span>
                       </span>
                     </td>
                     <td className="font-semibold text-base text-base-content">Brouci</td>
@@ -584,8 +625,11 @@ export default function DesignSystemPage() {
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
                     <td>
-                      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
-                        3.
+                      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                        <span className="relative inline-flex items-center justify-center">
+                          <span className="tabular-nums">3</span>
+                          <span className="absolute left-full top-0 select-none">.</span>
+                        </span>
                       </span>
                     </td>
                     <td className="font-semibold text-base text-base-content">Šneci</td>
