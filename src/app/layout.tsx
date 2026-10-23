@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "SPPDF BeerPong App",
-  description: "BeerPong Scoring App",
+  description: "BeerPong Scoring App & League System",
 };
 
 export default function RootLayout({
@@ -26,12 +26,37 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="cs" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var m = localStorage.getItem('beerpong_theme_mode');
+                var t = 'beerpong-light';
+                if (m === 'dark') {
+                  t = 'beerpong-dark';
+                } else if (m === 'light') {
+                  t = 'beerpong-light';
+                } else {
+                  t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'beerpong-dark' : 'beerpong-light';
+                }
+                document.documentElement.setAttribute('data-theme', t);
+                if (t === 'beerpong-dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-base-200 text-base-content`}
       >
         <Navbar />
-        {children}
+        <main className="flex-1 container mx-auto p-4 sm:p-6">{children}</main>
         <Toaster />
       </body>
     </html>
