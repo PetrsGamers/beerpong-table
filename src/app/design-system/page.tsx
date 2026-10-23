@@ -209,27 +209,27 @@ export default function DesignSystemPage() {
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <Trophy className="w-6 h-6 text-accent" />
-          <h2 className="text-2xl font-black">Odznaky a ligové medaile</h2>
+          <h2 className="text-2xl font-black">Odznaky a ligová ocenění</h2>
         </div>
         <p className="text-sm text-base-content/70">
-          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů. Emojis jsou vyhrazeny výhradně pro medaile prvních tří pozic.
+          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů nebo emojis.
         </p>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
           <div className="card-body p-6 sm:p-8 flex flex-col gap-6">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Ligová ocenění a medaile (Velikost: badge-lg)
+                Ligová ocenění a pořadí (Velikost: badge-lg)
               </h3>
               <div className="flex flex-wrap gap-3 items-center">
                 <span className="badge badge-lg bg-warning/20 border border-warning text-warning font-bold">
-                  🥇 1. Místo (Šampioni)
+                  1. Místo (Šampioni)
                 </span>
                 <span className="badge badge-lg bg-slate-400/20 border border-slate-400 text-base-content font-bold">
-                  🥈 2. Místo
+                  2. Místo
                 </span>
                 <span className="badge badge-lg bg-amber-700/20 border border-amber-700 text-amber-600 font-bold">
-                  🥉 3. Místo
+                  3. Místo
                 </span>
                 <span className="badge badge-lg badge-primary font-bold">
                   <Trophy className="w-4 h-4" />
@@ -551,7 +551,11 @@ export default function DesignSystemPage() {
                 </thead>
                 <tbody>
                   <tr className="bg-warning/15 font-bold border-b border-base-300">
-                    <td className="text-lg">🥇</td>
+                    <td>
+                      <span className="badge badge-warning font-black text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
+                        1.
+                      </span>
+                    </td>
                     <td className="text-base text-base-content">Vlci</td>
                     <td className="text-center tabular-nums">3</td>
                     <td className="text-center text-success font-black tabular-nums">3</td>
@@ -563,7 +567,11 @@ export default function DesignSystemPage() {
                   </tr>
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
-                    <td className="text-lg">🥈</td>
+                    <td>
+                      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
+                        2.
+                      </span>
+                    </td>
                     <td className="font-semibold text-base text-base-content">Brouci</td>
                     <td className="text-center tabular-nums">3</td>
                     <td className="text-center text-success font-bold tabular-nums">2</td>
@@ -575,7 +583,11 @@ export default function DesignSystemPage() {
                   </tr>
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
-                    <td className="text-lg">🥉</td>
+                    <td>
+                      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 px-2 shadow-sm inline-flex items-center justify-center tabular-nums">
+                        3.
+                      </span>
+                    </td>
                     <td className="font-semibold text-base text-base-content">Šneci</td>
                     <td className="text-center tabular-nums">3</td>
                     <td className="text-center text-success tabular-nums">0</td>
