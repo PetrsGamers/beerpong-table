@@ -15,7 +15,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="cs" className="dark">
+    <html lang="cs" className="dark" data-theme="dark">
       <body className={`${inter.className} antialiased bg-[#0a0a0f] text-white min-h-screen`}>
         {children}
       </body>
