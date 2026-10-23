@@ -2,6 +2,7 @@
 
 import { getSession } from "@/actions/auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Palette } from "lucide-react";
 import Link from "next/link";
 
 export const Navbar = async () => {
@@ -10,13 +11,14 @@ export const Navbar = async () => {
     <div className="navbar sticky top-0 z-50 bg-base-100/80 backdrop-blur-md border-b border-base-300 px-4 transition-colors">
       <div className="flex-1 flex items-center gap-4">
         <Link href="/" className="btn btn-ghost text-xl font-black tracking-tight text-base-content">
-          🦊 SPPDF BeerPong
+          SPPDF BeerPong
         </Link>
         <Link
           href="/design-system"
-          className="badge badge-primary badge-outline hover:badge-primary transition-all font-semibold text-xs py-3 px-3 gap-1 hidden sm:inline-flex"
+          className="badge badge-primary badge-outline hover:badge-primary transition-all font-semibold text-xs gap-1.5 hidden sm:inline-flex"
         >
-          🎨 Design System
+          <Palette className="w-3.5 h-3.5" />
+          Design System
         </Link>
       </div>
 

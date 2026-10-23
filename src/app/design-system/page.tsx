@@ -9,17 +9,16 @@ import {
   XCircle,
   Info,
   Trophy,
-  Flame,
   Shield,
   Beer,
   Layers,
-  Sparkles,
   Palette,
   Type,
   MousePointerClick,
   Table as TableIcon,
   BellRing,
   RotateCcw,
+  Award,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
@@ -55,13 +54,14 @@ export default function DesignSystemPage() {
         <div className="card-body p-6 sm:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="badge badge-primary gap-1 font-bold text-xs uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" /> SPPDF BeerPong 2.0
+              <span className="badge badge-primary gap-1.5 font-bold text-xs uppercase tracking-wider">
+                <Award className="w-3.5 h-3.5" />
+                SPPDF BeerPong 2.0
               </span>
-              <span className="badge badge-ghost text-xs">Styleguide & Design Tokens</span>
+              <span className="badge badge-ghost text-xs">Styleguide a designové tokeny</span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-              🎨 Design System & Témata
+              Design System a témata vzhledu
             </h1>
             <p className="py-2 text-base-content/80 text-sm sm:text-base max-w-2xl">
               Interaktivní vzorník a specifikace nového designového systému. Tento systém sjednocuje
@@ -98,14 +98,15 @@ export default function DesignSystemPage() {
         </div>
       </div>
 
-      {/* 1. TOAST NOTIFIKACE (NOVÁ SEKCE K OTESTOVÁNÍ) */}
+      {/* Toast notifikace */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <BellRing className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-black">1. Toast Notifikace (Interaktivní testování)</h2>
+          <h2 className="text-2xl font-black">Toast notifikace</h2>
         </div>
         <p className="text-sm text-base-content/70">
-          Toasty jsou plně sladěné s tématy (Light i Dark). Mají vysoký kontrast, zaoblení <code>rounded-2xl</code>, stín a podporují ikony i akční tlačítka.
+          Systémová hlášení plně sladěná s design systémem ve světlém i tmavém režimu.
+          Mají vysoký kontrast, zaoblení rohů, jemný stín a podporují ikony i akční tlačítka.
         </p>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
@@ -116,14 +117,14 @@ export default function DesignSystemPage() {
                 onClick={() => {
                   toast({
                     variant: "success",
-                    title: "✓ Výsledek zápasu uložen!",
+                    title: "Výsledek zápasu uložen",
                     description: "Brouci zvítězili 10:7 nad Vlky a získávají 3 body.",
                   });
                 }}
                 className="btn btn-success gap-2 text-white"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                Spustit Success Toast
+                Spustit úspěšný toast
               </button>
 
               {/* Error Toast */}
@@ -131,14 +132,14 @@ export default function DesignSystemPage() {
                 onClick={() => {
                   toast({
                     variant: "destructive",
-                    title: "✕ Chyba při zápisu!",
+                    title: "Chyba při zápisu",
                     description: "Hráč Josef Skalka již v tomto turnajovém večeru nastoupil za tým Brouci.",
                   });
                 }}
                 className="btn btn-error gap-2 text-white"
               >
                 <XCircle className="w-4 h-4" />
-                Spustit Error Toast
+                Spustit chybový toast
               </button>
 
               {/* Warning Toast */}
@@ -146,14 +147,14 @@ export default function DesignSystemPage() {
                 onClick={() => {
                   toast({
                     variant: "warning",
-                    title: "⚠️ Upozornění",
+                    title: "Upozornění",
                     description: "Tento turnajový večer ještě nebyl označen jako dohraný.",
                   });
                 }}
                 className="btn btn-warning gap-2 text-white"
               >
                 <AlertTriangle className="w-4 h-4" />
-                Spustit Warning Toast
+                Spustit varovný toast
               </button>
 
               {/* Info Toast */}
@@ -161,14 +162,14 @@ export default function DesignSystemPage() {
                 onClick={() => {
                   toast({
                     variant: "info",
-                    title: "ℹ️ Král střelců aktualizován",
+                    title: "Král střelců aktualizován",
                     description: "Karel Střelec právě trefil 6. kelímek večera.",
                   });
                 }}
                 className="btn btn-info gap-2 text-white"
               >
                 <Info className="w-4 h-4" />
-                Spustit Info Toast
+                Spustit informační toast
               </button>
 
               {/* Default Toast s Akcí */}
@@ -177,7 +178,7 @@ export default function DesignSystemPage() {
                   toast({
                     variant: "default",
                     title: "Zápas byl smazán",
-                    description: "Zápas #14 byl úspěšně odstraněn ze systému.",
+                    description: "Zápas byl úspěšně odstraněn ze systému.",
                     action: (
                       <ToastAction
                         altText="Vrátit zpět"
@@ -204,21 +205,21 @@ export default function DesignSystemPage() {
         </div>
       </section>
 
-      {/* 2. ODZNAKY A BADGES S FIXNUTÝM PADDINGEM */}
+      {/* Odznaky a ligové medaile */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <Trophy className="w-6 h-6 text-accent" />
-          <h2 className="text-2xl font-black">2. Odznaky & Ligové medaile (Opravený padding)</h2>
+          <h2 className="text-2xl font-black">Odznaky a ligové medaile</h2>
         </div>
         <p className="text-sm text-base-content/70">
-          Všechny badges mají nyní globálně vyvážený padding (<code>px-3 py-1</code>), vertikální vycentrování a přirozený pilulkový tvar (<code>rounded-full</code>), který se už nedeformuje ani při změně velikosti písma.
+          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů. Emojis jsou vyhrazeny výhradně pro medaile prvních tří pozic.
         </p>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
           <div className="card-body p-6 sm:p-8 flex flex-col gap-6">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Ligová ocenění a medaile (Velikost: badge-lg s vyváženým paddingem)
+                Ligová ocenění a medaile (Velikost: badge-lg)
               </h3>
               <div className="flex flex-wrap gap-3 items-center">
                 <span className="badge badge-lg bg-warning/20 border border-warning text-warning font-bold">
@@ -231,22 +232,33 @@ export default function DesignSystemPage() {
                   🥉 3. Místo
                 </span>
                 <span className="badge badge-lg badge-primary font-bold">
-                  👑 Král střelců (13 🎯)
+                  <Trophy className="w-4 h-4" />
+                  Král střelců (13 bodů)
                 </span>
                 <span className="badge badge-lg badge-info text-info-content font-bold">
-                  🌬️ BlowJob King (4 🌬️)
+                  <Shield className="w-4 h-4" />
+                  BlowJob King (4 body)
                 </span>
               </div>
             </div>
 
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Stavové odznaky turnaje (Standardní velikost)
+                Stavové odznaky
               </h3>
               <div className="flex flex-wrap gap-3 items-center">
-                <span className="badge badge-success">● Odehráno</span>
-                <span className="badge badge-warning">● Právě probíhá</span>
-                <span className="badge badge-ghost">Čeká na odehrání</span>
+                <span className="badge badge-success">
+                  <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                  Odehráno
+                </span>
+                <span className="badge badge-warning">
+                  <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                  Právě probíhá
+                </span>
+                <span className="badge badge-ghost">
+                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-60"></span>
+                  Čeká na odehrání
+                </span>
                 <span className="badge badge-primary badge-outline">Aktivní semestr</span>
                 <span className="badge badge-error">Kontumace</span>
                 <span className="badge badge-neutral">5 kol</span>
@@ -271,7 +283,7 @@ export default function DesignSystemPage() {
               </h3>
               <div className="inline-flex items-center gap-3 p-3 bg-base-200 rounded-2xl border border-base-300">
                 <span className="font-extrabold text-lg px-2">Brouci</span>
-                <span className="badge badge-lg font-black bg-base-100 text-xl border-base-300 shadow-inner px-5 py-3">
+                <span className="badge badge-lg font-black bg-base-100 text-xl border-base-300 shadow-inner px-5 py-3 tabular-nums">
                   10 : 7
                 </span>
                 <span className="font-extrabold text-lg px-2">Vlci</span>
@@ -281,11 +293,11 @@ export default function DesignSystemPage() {
         </div>
       </section>
 
-      {/* 3. Barevná paleta (Color Tokens & WCAG Contrast) */}
+      {/* Barevná paleta a sémantické tokeny */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <Palette className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-black">3. Barevná paleta a sémantické tokeny</h2>
+          <h2 className="text-2xl font-black">Barevná paleta a sémantické tokeny</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
@@ -293,14 +305,14 @@ export default function DesignSystemPage() {
           <div className="card bg-base-100 border border-base-300 shadow-sm p-4 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="font-mono text-xs font-bold">base-100</span>
-                <span className="badge badge-xs badge-ghost font-mono">{isDark ? "#131b2e" : "#ffffff"}</span>
+                <span className="text-xs font-bold">base-100</span>
+                <span className="badge badge-xs badge-ghost">{isDark ? "#131b2e" : "#ffffff"}</span>
               </div>
-              <h3 className="font-bold text-base">Povrch karet & tabulek</h3>
+              <h3 className="font-bold text-base">Povrch karet a tabulek</h3>
               <p className="text-xs text-base-content/70 mt-1">Základní tělo boxů, formulářů a modálů.</p>
             </div>
-            <div className="mt-4 pt-2 border-t border-base-300 text-[10px] text-base-content/60 font-mono">
-              Surface background
+            <div className="mt-4 pt-2 border-t border-base-300 text-[11px] text-base-content/60">
+              Karty a kontejnery
             </div>
           </div>
 
@@ -308,14 +320,14 @@ export default function DesignSystemPage() {
           <div className="card bg-base-200 border border-base-300 shadow-sm p-4 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="font-mono text-xs font-bold">base-200</span>
-                <span className="badge badge-xs badge-ghost font-mono">{isDark ? "#0b0f19" : "#f8fafc"}</span>
+                <span className="text-xs font-bold">base-200</span>
+                <span className="badge badge-xs badge-ghost">{isDark ? "#0b0f19" : "#f8fafc"}</span>
               </div>
               <h3 className="font-bold text-base">Pozadí aplikace</h3>
               <p className="text-xs text-base-content/70 mt-1">Hluboký podklad pod kartami a sekcemi.</p>
             </div>
-            <div className="mt-4 pt-2 border-t border-base-300 text-[10px] text-base-content/60 font-mono">
-              App main background
+            <div className="mt-4 pt-2 border-t border-base-300 text-[11px] text-base-content/60">
+              Hlavní podklad stránky
             </div>
           </div>
 
@@ -323,14 +335,14 @@ export default function DesignSystemPage() {
           <div className="card bg-base-300 border border-base-300 shadow-sm p-4 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="font-mono text-xs font-bold">base-300</span>
-                <span className="badge badge-xs badge-ghost font-mono">{isDark ? "#1e293b" : "#e2e8f0"}</span>
+                <span className="text-xs font-bold">base-300</span>
+                <span className="badge badge-xs badge-ghost">{isDark ? "#1e293b" : "#e2e8f0"}</span>
               </div>
-              <h3 className="font-bold text-base">Ohraničení & oddělovače</h3>
+              <h3 className="font-bold text-base">Ohraničení a oddělovače</h3>
               <p className="text-xs text-base-content/70 mt-1">Jemné a přesné linky tabulek a karet.</p>
             </div>
-            <div className="mt-4 pt-2 border-t border-base-300 text-[10px] text-base-content/60 font-mono">
-              Borders & Dividers
+            <div className="mt-4 pt-2 border-t border-base-300 text-[11px] text-base-content/60">
+              Ohraničení prvků
             </div>
           </div>
 
@@ -338,16 +350,17 @@ export default function DesignSystemPage() {
           <div className="card bg-base-100 border border-base-300 shadow-sm p-4 flex flex-col justify-between ring-1 ring-primary/30">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="font-mono text-xs font-bold">base-content</span>
-                <span className="badge badge-xs badge-success font-bold font-mono">WCAG AAA (16:1)</span>
+                <span className="text-xs font-bold">base-content</span>
+                <span className="badge badge-xs badge-success font-bold">WCAG AAA (16:1)</span>
               </div>
-              <h3 className="font-bold text-base text-base-content">Hlavní text & titulky</h3>
+              <h3 className="font-bold text-base text-base-content">Hlavní text a titulky</h3>
               <p className="text-xs text-base-content/70 mt-1">
-                Maximální kontrast. Už žádný nečitelný světlý text ve white mode!
+                Maximální kontrast. Vysoká čitelnost ve světlém i tmavém režimu.
               </p>
             </div>
-            <div className="mt-4 pt-2 border-t border-base-300 text-[10px] font-mono font-bold text-success">
-              ✓ 100% čitelnost
+            <div className="mt-4 pt-2 border-t border-base-300 text-[11px] font-bold text-success flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              100% čitelnost
             </div>
           </div>
         </div>
@@ -355,101 +368,101 @@ export default function DesignSystemPage() {
         {/* Akcentní a stavové barvy */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-4">
           <div className="p-4 rounded-2xl bg-primary text-primary-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">primary</span>
+            <span className="text-xs font-bold uppercase">primary</span>
             <div>
               <div className="font-black text-sm">Pivní oranžová</div>
-              <span className="text-[10px] opacity-80">Akce a tlačítka</span>
+              <span className="text-[11px] opacity-80">Akce a tlačítka</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-accent text-accent-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">accent</span>
+            <span className="text-xs font-bold uppercase">accent</span>
             <div>
               <div className="font-black text-sm">Zlatý ležák</div>
-              <span className="text-[10px] opacity-80">1. místo, koruny</span>
+              <span className="text-[11px] opacity-80">1. místo a ocenění</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-secondary text-secondary-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">secondary</span>
+            <span className="text-xs font-bold uppercase">secondary</span>
             <div>
               <div className="font-black text-sm">Sekundární</div>
-              <span className="text-[10px] opacity-80">Badge & doplňky</span>
+              <span className="text-[11px] opacity-80">Doplňky a badge</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-success text-success-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">success</span>
+            <span className="text-xs font-bold uppercase">success</span>
             <div>
               <div className="font-black text-sm">Výhra / Úspěch</div>
-              <span className="text-[10px] opacity-80">Zelené stavy</span>
+              <span className="text-[11px] opacity-80">Pozitivní stavy</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-warning text-warning-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">warning</span>
+            <span className="text-xs font-bold uppercase">warning</span>
             <div>
               <div className="font-black text-sm">Varování</div>
-              <span className="text-[10px] opacity-80">Probíhající kola</span>
+              <span className="text-[11px] opacity-80">Probíhající kola</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-error text-error-content shadow-md flex flex-col justify-between h-28">
-            <span className="text-xs font-bold font-mono uppercase">error</span>
+            <span className="text-xs font-bold uppercase">error</span>
             <div>
               <div className="font-black text-sm">Prohra / Smazat</div>
-              <span className="text-[10px] opacity-80">Kritické akce</span>
+              <span className="text-[11px] opacity-80">Kritické akce</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Typografie */}
+      {/* Typografie a textový kontrast */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <Type className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-black">4. Typografie a textový kontrast</h2>
+          <h2 className="text-2xl font-black">Typografie a textový kontrast</h2>
         </div>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
           <div className="card-body p-6 sm:p-8 flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-base-300 pb-4 gap-2">
-              <span className="text-xs font-mono text-base-content/60 w-32">Heading 1</span>
+              <span className="text-xs text-base-content/60 w-32 font-medium">Heading 1</span>
               <h1 className="text-4xl font-black flex-1">SPPDF BeerPong Liga 2025</h1>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-base-300 pb-4 gap-2">
-              <span className="text-xs font-mono text-base-content/60 w-32">Heading 2</span>
+              <span className="text-xs text-base-content/60 w-32 font-medium">Heading 2</span>
               <h2 className="text-2xl font-extrabold flex-1">1. Kolo – Turnajový večer</h2>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-base-300 pb-4 gap-2">
-              <span className="text-xs font-mono text-base-content/60 w-32">Heading 3</span>
+              <span className="text-xs text-base-content/60 w-32 font-medium">Heading 3</span>
               <h3 className="text-lg font-bold flex-1">Brouci vs. Vlci (Zápis zápasu)</h3>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-base-300 pb-4 gap-2">
-              <span className="text-xs font-mono text-base-content/60 w-32">Body</span>
+              <span className="text-xs text-base-content/60 w-32 font-medium">Body</span>
               <p className="text-base text-base-content flex-1">
-                Základní čtecí text s plným kontrastem. Tento text je bezpečně čitelný za jakýchkoliv světelných podmínek na monitoru i mobilu.
+                Základní čtecí text s plným kontrastem. Tento text je bezpečně čitelný za jakýchkoliv světelných podmínek na monitoru i mobilu bez použití umělých monospace písem.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-              <span className="text-xs font-mono text-base-content/60 w-32">Muted / Podtitulek</span>
+              <span className="text-xs text-base-content/60 w-32 font-medium">Muted / Podtitulek</span>
               <p className="text-sm text-base-content/70 flex-1">
-                <code>text-base-content/70</code>: Popisky, metadata a datum (např. <em>📅 24. 10. 2026 • 5 odehraných zápasů</em>).
+                Podtitulky a doplňující informace: 24. 10. 2026 • 5 odehraných zápasů.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. Tlačítka */}
+      {/* Tlačítka a stavy */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <MousePointerClick className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-black">5. Tlačítka a stavy (Buttons)</h2>
+          <h2 className="text-2xl font-black">Tlačítka a stavy</h2>
         </div>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
@@ -459,45 +472,64 @@ export default function DesignSystemPage() {
                 Základní varianty
               </h3>
               <div className="flex flex-wrap gap-3">
-                <button className="btn btn-primary">btn-primary</button>
-                <button className="btn btn-secondary">btn-secondary</button>
-                <button className="btn btn-accent">btn-accent</button>
-                <button className="btn btn-neutral">btn-neutral</button>
-                <button className="btn btn-outline">btn-outline</button>
-                <button className="btn btn-ghost">btn-ghost</button>
-                <button className="btn btn-success">btn-success</button>
-                <button className="btn btn-error">btn-error</button>
+                <button className="btn btn-primary">Primární akce</button>
+                <button className="btn btn-secondary">Sekundární akce</button>
+                <button className="btn btn-accent">Akcentní akce</button>
+                <button className="btn btn-neutral">Neutrální</button>
+                <button className="btn btn-outline">Obrysové</button>
+                <button className="btn btn-ghost">Nenápadné (Ghost)</button>
+                <button className="btn btn-success">Úspěšné</button>
+                <button className="btn btn-error">Kritické</button>
               </div>
             </div>
 
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Velikosti (Sizes)
+                Velikosti tlačítek
               </h3>
               <div className="flex flex-wrap items-center gap-3">
-                <button className="btn btn-primary btn-lg">Large (lg)</button>
-                <button className="btn btn-primary btn-md">Medium (md)</button>
-                <button className="btn btn-primary btn-sm">Small (sm)</button>
-                <button className="btn btn-primary btn-xs">Extra Small (xs)</button>
+                <button className="btn btn-primary btn-lg">Velké (lg)</button>
+                <button className="btn btn-primary btn-md">Střední (md)</button>
+                <button className="btn btn-primary btn-sm">Malé (sm)</button>
+                <button className="btn btn-primary btn-xs">Kompaktní (xs)</button>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
+                Stavy
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                <button className="btn btn-primary">
+                  <span className="loading loading-spinner loading-xs"></span>
+                  Ukládání zápasu...
+                </button>
+                <button className="btn" disabled>
+                  Deaktivované tlačítko
+                </button>
+                <button className="btn btn-outline btn-sm gap-2">
+                  <Beer className="w-4 h-4 text-primary" />
+                  S ikonou
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Ligová tabulka */}
+      {/* Ligová tabulka */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <TableIcon className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-black">6. Ukázka ligové tabulky (Table Component)</h2>
+          <h2 className="text-2xl font-black">Ligová tabulka</h2>
         </div>
 
         <div className="card bg-base-100 shadow-xl border border-base-300">
           <div className="card-body p-6">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="card-title text-xl font-bold">🏆 Celková ligová tabulka (Jarní semestr 2025)</h3>
-                <p className="text-xs text-base-content/70">Ukázka vysokého kontrastu textů i při podbarvení prvního místa</p>
+                <h3 className="card-title text-xl font-bold">Celková ligová tabulka (Jarní semestr 2025)</h3>
+                <p className="text-xs text-base-content/70">Přirozená čísla s vysokým kontrastem i při zlatavém podbarvení prvního místa</p>
               </div>
               <span className="badge badge-neutral">5 kol</span>
             </div>
@@ -521,41 +553,123 @@ export default function DesignSystemPage() {
                   <tr className="bg-warning/15 font-bold border-b border-base-300">
                     <td className="text-lg">🥇</td>
                     <td className="text-base text-base-content">Vlci</td>
-                    <td className="text-center">3</td>
-                    <td className="text-center text-success font-black">3</td>
-                    <td className="text-center text-base-content/60">0</td>
-                    <td className="text-center text-error">0</td>
-                    <td className="text-center font-mono">30:19</td>
-                    <td className="text-center font-mono text-success">+11</td>
-                    <td className="text-right font-black text-xl text-primary">9</td>
+                    <td className="text-center tabular-nums">3</td>
+                    <td className="text-center text-success font-black tabular-nums">3</td>
+                    <td className="text-center text-base-content/60 tabular-nums">0</td>
+                    <td className="text-center text-error tabular-nums">0</td>
+                    <td className="text-center tabular-nums">30:19</td>
+                    <td className="text-center tabular-nums text-success font-bold">+11</td>
+                    <td className="text-right font-black text-xl text-primary tabular-nums">9</td>
                   </tr>
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
-                    <td>2.</td>
+                    <td className="text-lg">🥈</td>
                     <td className="font-semibold text-base text-base-content">Brouci</td>
-                    <td className="text-center">3</td>
-                    <td className="text-center text-success font-bold">2</td>
-                    <td className="text-center text-base-content/60">0</td>
-                    <td className="text-center text-error">1</td>
-                    <td className="text-center font-mono">26:24</td>
-                    <td className="text-center font-mono text-success">+2</td>
-                    <td className="text-right font-bold text-lg text-primary">6</td>
+                    <td className="text-center tabular-nums">3</td>
+                    <td className="text-center text-success font-bold tabular-nums">2</td>
+                    <td className="text-center text-base-content/60 tabular-nums">0</td>
+                    <td className="text-center text-error tabular-nums">1</td>
+                    <td className="text-center tabular-nums">26:24</td>
+                    <td className="text-center tabular-nums text-success font-bold">+2</td>
+                    <td className="text-right font-bold text-lg text-primary tabular-nums">6</td>
                   </tr>
 
                   <tr className="border-b border-base-300/80 hover:bg-base-200/50 transition-colors">
-                    <td>3.</td>
+                    <td className="text-lg">🥉</td>
                     <td className="font-semibold text-base text-base-content">Šneci</td>
-                    <td className="text-center">3</td>
-                    <td className="text-center text-success">0</td>
-                    <td className="text-center text-base-content/60">0</td>
-                    <td className="text-center text-error font-bold">3</td>
-                    <td className="text-center font-mono">15:28</td>
-                    <td className="text-center font-mono text-error">-13</td>
-                    <td className="text-right font-bold text-lg text-base-content/70">0</td>
+                    <td className="text-center tabular-nums">3</td>
+                    <td className="text-center text-success tabular-nums">0</td>
+                    <td className="text-center text-base-content/60 tabular-nums">0</td>
+                    <td className="text-center text-error font-bold tabular-nums">3</td>
+                    <td className="text-center tabular-nums">15:28</td>
+                    <td className="text-center tabular-nums text-error font-bold">-13</td>
+                    <td className="text-right font-bold text-lg text-base-content/70 tabular-nums">0</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Formulářové prvky */}
+      <section className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 border-b border-base-300 pb-3">
+          <Layers className="w-6 h-6 text-primary" />
+          <h2 className="text-2xl font-black">Formulářové prvky a vstupy</h2>
+        </div>
+
+        <div className="card bg-base-100 border border-base-300 shadow-md">
+          <div className="card-body p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-bold">Název týmu</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Např. Pivní Šneci"
+                className="input input-bordered w-full"
+                defaultValue="Brouci"
+              />
+              <label className="label">
+                <span className="label-text-alt text-base-content/60">Jméno musí být unikátní pro semestr</span>
+              </label>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-bold">Výběr turnajového večera</span>
+              </label>
+              <select className="select select-bordered w-full" defaultValue="2">
+                <option value="1">1. Kolo (Odehráno)</option>
+                <option value="2">2. Kolo (Odehráno)</option>
+                <option value="3">3. Kolo (Nadcházející)</option>
+                <option value="4">4. Kolo (Nadcházející)</option>
+                <option value="5">5. Kolo - Velké Finále</option>
+              </select>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-bold">Skóre zápasu</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  defaultValue="10"
+                  className="input input-bordered w-full text-center font-bold text-lg tabular-nums"
+                />
+                <span className="font-bold text-xl">:</span>
+                <input
+                  type="number"
+                  defaultValue="7"
+                  className="input input-bordered w-full text-center font-bold text-lg tabular-nums"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Systémová hlášení */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-bold">Systémová hlášení</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="alert alert-info">
+            <Info className="w-5 h-5" />
+            <span>Tento semestr obsahuje celkem 5 turnajových večerů.</span>
+          </div>
+          <div className="alert alert-success">
+            <CheckCircle2 className="w-5 h-5" />
+            <span>Výsledek zápasu byl úspěšně uložen do databáze.</span>
+          </div>
+          <div className="alert alert-warning">
+            <AlertTriangle className="w-5 h-5" />
+            <span>Turnajový večer ještě nebyl označen jako ukončený.</span>
+          </div>
+          <div className="alert alert-error">
+            <XCircle className="w-5 h-5" />
+            <span>Hráč již v tomto večeru nastoupil za jiný tým.</span>
           </div>
         </div>
       </section>
