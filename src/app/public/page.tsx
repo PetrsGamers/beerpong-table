@@ -7,29 +7,26 @@ export const dynamic = 'force-dynamic';
 function renderRank(idx: number) {
   if (idx === 0) {
     return (
-      <span className="badge badge-warning gap-1 font-bold text-xs h-6 sm:h-7 px-2 sm:px-2.5 shadow-sm inline-flex items-center justify-center whitespace-nowrap">
-        <span>🥇</span>
-        <span>1.</span>
+      <span className="badge badge-warning font-black text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
+        1.
       </span>
     );
   }
   if (idx === 1) {
     return (
-      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 gap-1 font-bold text-xs h-6 sm:h-7 px-2 sm:px-2.5 shadow-sm inline-flex items-center justify-center whitespace-nowrap">
-        <span>🥈</span>
-        <span>2.</span>
+      <span className="badge badge-ghost bg-slate-300 text-slate-900 border-slate-300 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
+        2.
       </span>
     );
   }
   if (idx === 2) {
     return (
-      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 gap-1 font-bold text-xs h-6 sm:h-7 px-2 sm:px-2.5 shadow-sm inline-flex items-center justify-center whitespace-nowrap">
-        <span>🥉</span>
-        <span>3.</span>
+      <span className="badge badge-ghost bg-amber-800 text-amber-100 border-amber-800 font-bold text-xs h-6 sm:h-7 px-2.5 shadow-sm inline-flex items-center justify-center tabular-nums">
+        3.
       </span>
     );
   }
-  return <span className="text-base-content/70 font-medium pl-1 sm:pl-2">{idx + 1}.</span>;
+  return <span className="text-base-content/70 font-medium pl-1 sm:pl-2 tabular-nums">{idx + 1}.</span>;
 }
 
 function getRowStyle(idx: number) {

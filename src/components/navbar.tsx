@@ -8,7 +8,7 @@ export const Navbar = async () => {
     <div className="navbar sticky top-0 z-50 bg-black">
       <div className="flex-1">
         <a href="/" className="btn btn-ghost text-xl">
-          🦊 SPPDF BeerPong
+          SPPDF BeerPong
         </a>
       </div>
       <div className="navbar-end flex-none">
