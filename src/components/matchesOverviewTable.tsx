@@ -1,6 +1,6 @@
 "use client";
 import { deleteMatch } from "@/actions/matches";
-import { MatchWithTeams } from "@/app/[tournamentid]/action";
+import { MatchWithTeams } from "@/app/(admin)/[tournamentid]/action";
 
 export interface MatchesOverViewTableProps {
   matches: MatchWithTeams[];

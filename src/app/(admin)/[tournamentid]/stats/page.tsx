@@ -3,6 +3,7 @@ import { getPlayersForTournamentId } from "@/actions/players";
 import { getTeamsForTournamentSorted } from "@/actions/teams";
 import { getTournamentById } from "@/actions/tournaments";
 import ExportCSVButton from "@/components/ExportCSVButton";
+import SharePublicLink from "@/components/SharePublicLink";
 
 export default async function Home(params: {
   params: { tournamentid: number };
@@ -122,12 +123,15 @@ export default async function Home(params: {
             </table>
           </div>
         </div>
-        <ExportCSVButton
-          teams={teamsOrdered}
-          playersByScore={playersSortedByScore}
-          playersByBlowjobs={playersSortedByBlowjobs}
-          tournamentName={tournamentName}
-        />
+        <div className="flex gap-4 items-center">
+          <ExportCSVButton
+            teams={teamsOrdered}
+            playersByScore={playersSortedByScore}
+            playersByBlowjobs={playersSortedByBlowjobs}
+            tournamentName={tournamentName}
+          />
+          <SharePublicLink tournamentId={params.params.tournamentid} />
+        </div>
       </main>
     </div>
   );

@@ -5,6 +5,7 @@ import { loadAllTeams } from "@/actions/teams";
 import { getAllTournaments } from "@/actions/tournaments";
 import CreateTournamentButton from "@/components/CreateTournametButton";
 import MultiTournamentExport from "@/components/MultiTournamentExport";
+import SharePublicLink from "@/components/SharePublicLink";
 import TournamentDetailsButton from "@/components/TournametDetailsButton";
 
 export default async function Home() {
@@ -28,6 +29,7 @@ export default async function Home() {
                   {(await getMatchesForTournament(tournament.id)).length}
                 </p>
                 <div className="card-actions justify-end">
+                  <SharePublicLink tournamentId={tournament.id} />
                   <TournamentDetailsButton id={tournament.id} />
                 </div>
               </div>

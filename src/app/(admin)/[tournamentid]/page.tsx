@@ -4,6 +4,7 @@ import AddNewMatchButton from "@/components/addNewMatchButton";
 import CreateTeam from "@/components/createTeam";
 import { MatchesOverViewTable } from "@/components/matchesOverviewTable";
 import StatsTournamentButton from "@/components/statsTournamentButton";
+import SharePublicLink from "@/components/SharePublicLink";
 import TournamentTeamTable from "@/components/tournamentTeamTable";
 import { loadMatches, loadTournament, MatchWithTeams } from "./action";
 
@@ -52,6 +53,7 @@ export default async function Home(params: {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           {/* Action Buttons */}
           <div className="flex justify-end space-x-4 mb-8">
+            <SharePublicLink tournamentId={params.params.tournamentid} />
             <StatsTournamentButton id={params.params.tournamentid} />
             <AddNewMatchButton
               id={params.params.tournamentid}
