@@ -61,18 +61,23 @@
 }
 
 @layer components {
-  /* Konzistentní sizing & pohodlný padding pro všechny badges */
+  /* Konzistentní sizing, dokonalá flex centrace & prevence zalamování textu na mobilu pro všechny badges */
   .badge {
-    @apply h-auto min-h-[1.5rem] py-1 px-3 inline-flex items-center justify-center font-semibold rounded-full gap-1.5 transition-all;
+    @apply h-auto min-h-[1.5rem] py-1 px-3 inline-flex items-center justify-center text-center font-semibold rounded-full gap-1.5 transition-all;
+    white-space: nowrap !important;
+    flex-shrink: 0;
   }
   .badge-sm {
     @apply min-h-[1.25rem] py-0.5 px-2 text-[11px];
+    white-space: nowrap !important;
   }
   .badge-xs {
     @apply min-h-[1rem] py-0.5 px-1.5 text-[10px];
+    white-space: nowrap !important;
   }
   .badge-lg {
     @apply min-h-[2rem] py-1.5 px-4 text-sm font-bold;
+    white-space: nowrap !important;
   }
 }
 

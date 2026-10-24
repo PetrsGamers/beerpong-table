@@ -212,14 +212,14 @@ export default function DesignSystemPage() {
           <h2 className="text-2xl font-black">Odznaky a ligová ocenění</h2>
         </div>
         <p className="text-sm text-base-content/70">
-          Všechny badges mají vyvážený padding a vertikální centrování bez použití monospace fontů. Čísla 1., 2. a 3. v odznacích jsou opticky vycentrovaná přesně na číslo (tečka je vyjmuta z toku, takže neposouvá střed čísla doleva).
+          Všechny badges mají vyvážený padding, horizontální i vertikální flex centrování a zákaz zalamování řádků (whitespace-nowrap). Ani na nejužších mobilních displejích se texty jako „5. místo“ nerozpadnou na dva řádky. Čísla 1., 2. a 3. v odznacích jsou opticky vycentrovaná přesně na číslo bez započtení tečky.
         </p>
 
         <div className="card bg-base-100 border border-base-300 shadow-md">
           <div className="card-body p-6 sm:p-8 flex flex-col gap-6">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-base-content/60 mb-3">
-                Pořadí v tabulkách (opticky vycentrované na číslo bez započtení tečky)
+                Pořadí v tabulkách (opticky vycentrované na číslo bez započtení tečky, nerozpadá se na mobilu)
               </h3>
               <div className="flex flex-wrap gap-4 items-center">
                 <div className="flex items-center gap-2">
@@ -249,6 +249,24 @@ export default function DesignSystemPage() {
                   </span>
                   <span className="text-xs font-semibold">3. místo</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-ghost font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                    <span className="relative inline-flex items-center justify-center">
+                      <span className="tabular-nums">4</span>
+                      <span className="absolute left-full top-0 select-none">.</span>
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold">4. místo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-ghost font-bold text-xs h-6 min-w-[1.75rem] px-1 shadow-sm inline-flex items-center justify-center">
+                    <span className="relative inline-flex items-center justify-center">
+                      <span className="tabular-nums">5</span>
+                      <span className="absolute left-full top-0 select-none">.</span>
+                    </span>
+                  </span>
+                  <span className="text-xs font-semibold">5. místo</span>
+                </div>
               </div>
             </div>
 
@@ -265,6 +283,12 @@ export default function DesignSystemPage() {
                 </span>
                 <span className="badge badge-lg bg-amber-700/20 border border-amber-700 text-amber-600 font-bold">
                   3. Místo
+                </span>
+                <span className="badge badge-lg bg-base-300/40 border border-base-300 text-base-content font-bold">
+                  4. Místo
+                </span>
+                <span className="badge badge-lg bg-base-300/40 border border-base-300 text-base-content font-bold">
+                  5. Místo
                 </span>
                 <span className="badge badge-lg badge-primary font-bold">
                   <Trophy className="w-4 h-4" />
