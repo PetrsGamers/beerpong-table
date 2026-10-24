@@ -3,7 +3,7 @@ import { tournament } from "@/db/schema";
 import { eq } from "drizzle-orm"; // Replace "some-library" with the actual library name
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { db } from "../../db";
+import { db } from "@/db";
 
 export async function createTournament(formData: FormData) {
   const tournamentName = formData.get("tournamentName") as string | null;
