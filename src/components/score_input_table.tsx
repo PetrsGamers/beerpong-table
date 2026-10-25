@@ -1,7 +1,8 @@
 "use client";
 import { createNewMatch } from "@/actions/matches";
-import { addPlayerScoreAndBJ, getPlayersForTeamId } from "@/actions/players";
+import { getPlayersForTeamId } from "@/actions/players";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowUpDown } from "lucide-react";
 import { PlayerCouple } from "@/types/player";
 import { Team } from "@/types/team";
 import { useRef, useState } from "react";
@@ -20,6 +21,9 @@ export const ScoreInputTable = (props: {
   const { toast } = useToast();
 
   const formRef = useRef(null);
+  // ref guards against double submits within the same tick, state drives the UI
+  const savingRef = useRef(false);
+  const [saving, setSaving] = useState(false);
   const [team1, setTeam1] = useState<Team | null>(null);
   const [team2, setTeam2] = useState<Team | null>(null);
   const [team1Players, setTeam1Players] =
@@ -53,6 +57,13 @@ export const ScoreInputTable = (props: {
     }
   };
 
+  const swapPlayers = (playerSetter: any) => {
+    playerSetter((players: PlayerCouple) => ({
+      player1: players.player2,
+      player2: players.player1,
+    }));
+  };
+
   function handleModalConfirm() {
     if (formRef?.current) {
       //@ts-ignore
@@ -62,6 +73,9 @@ export const ScoreInputTable = (props: {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent page reload
+    if (savingRef.current) {
+      return;
+    }
     const formData = new FormData(event.target);
 
     const values = Object.fromEntries(formData.entries());
@@ -85,61 +99,98 @@ export const ScoreInputTable = (props: {
       return;
     }
 
-    // create a match entry in the db
-    const t1score =
-      Number(values.team1player1score) + Number(values.team1player2score);
-    const t2score =
-      Number(values.team2player1score) + Number(values.team2player2score);
+    // players are read from state (not the team) so a swapped order is respected
+    if (
+      !team1Players.player1 ||
+      !team1Players.player2 ||
+      !team2Players.player1 ||
+      !team2Players.player2
+    ) {
+      toast({
+        title: "Error submitting match",
+        description: "Players not loaded",
+        duration: 2000,
+      });
+      return;
+    }
 
-    await createNewMatch(
-      props.tournamentId,
-      team1?.id,
-      team2?.id,
-      `${t1score}:${t2score}`
-    );
-    await addPlayerScoreAndBJ(
-      team1.player1_id!,
-      Number(values.team1player1score),
-      Number(values.team1player1BJ)
-    );
-    await addPlayerScoreAndBJ(
-      team1.player2_id!,
-      Number(values.team1player2score),
-      Number(values.team1player2BJ)
-    );
-    await addPlayerScoreAndBJ(
-      team2.player1_id!,
-      Number(values.team2player1score),
-      Number(values.team2player1BJ)
-    );
-    await addPlayerScoreAndBJ(
-      team2.player2_id!,
-      Number(values.team2player2score),
-      Number(values.team2player2BJ)
-    );
+    savingRef.current = true;
+    setSaving(true);
+    try {
+      // create a match entry in the db
+      const t1score =
+        Number(values.team1player1score) + Number(values.team1player2score);
+      const t2score =
+        Number(values.team2player1score) + Number(values.team2player2score);
 
-    //
-    // TODO: huge refactoring needed
-    //
+      const result = await createNewMatch(
+        props.tournamentId,
+        team1?.id,
+        team2?.id,
+        `${t1score}:${t2score}`,
+        [
+          {
+            playerId: team1Players.player1.id,
+            score: Number(values.team1player1score),
+            blowjobs: Number(values.team1player1BJ),
+          },
+          {
+            playerId: team1Players.player2.id,
+            score: Number(values.team1player2score),
+            blowjobs: Number(values.team1player2BJ),
+          },
+          {
+            playerId: team2Players.player1.id,
+            score: Number(values.team2player1score),
+            blowjobs: Number(values.team2player1BJ),
+          },
+          {
+            playerId: team2Players.player2.id,
+            score: Number(values.team2player2score),
+            blowjobs: Number(values.team2player2BJ),
+          },
+        ]
+      );
+      if (result.error) {
+        toast({
+          title: "Error submitting match",
+          description: result.error,
+          duration: 2000,
+        });
+        return;
+      }
 
-    // await createPlayerMatchEntry(
-    //   team1.player1_id,
-    //   MATCHID,
-    //   formData.get("team1player1score") || 0,
-    //   formData.get("team1player1BJ") || 0
-    //
+      //
+      // TODO: huge refactoring needed
+      //
 
-    // create 4 match-player entries in the db
+      // await createPlayerMatchEntry(
+      //   team1.player1_id,
+      //   MATCHID,
+      //   formData.get("team1player1score") || 0,
+      //   formData.get("team1player1BJ") || 0
+      //
 
-    // show success / error toast message
-    toast({
-      title: "Match saved successfully",
-      description: "Dobrá práce, kámobráško",
-      duration: 2000,
-    });
+      // create 4 match-player entries in the db
 
-    // reset the form values to default
-    event.target.reset();
+      // show success / error toast message
+      toast({
+        title: "Match saved successfully",
+        description: "Dobrá práce, kámobráško",
+        duration: 2000,
+      });
+
+      // reset the form values to default
+      event.target.reset();
+      // clear the teams too, so the same match can't be submitted again by accident
+      setTeam1(null);
+      setTeam2(null);
+      setTeam1Players(defaultPlayerState);
+      setTeam2Players(defaultPlayerState);
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
+    }
   };
 
   return (
@@ -165,6 +216,15 @@ export const ScoreInputTable = (props: {
                     </option>
                   ))}
                 </select>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-ghost ml-1"
+                  title="Prohodit hráče"
+                  onClick={() => swapPlayers(setTeam1Players)}
+                  disabled={!team1Players.player1}
+                >
+                  <ArrowUpDown size={16} />
+                </button>
               </th>
               <th colSpan={2} className="py-2 px-4 border-b">
                 Skóre
@@ -185,6 +245,15 @@ export const ScoreInputTable = (props: {
                     </option>
                   ))}
                 </select>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-ghost ml-1"
+                  title="Prohodit hráče"
+                  onClick={() => swapPlayers(setTeam2Players)}
+                  disabled={!team2Players.player1}
+                >
+                  <ArrowUpDown size={16} />
+                </button>
               </th>
             </tr>
           </thead>
@@ -236,6 +305,7 @@ export const ScoreInputTable = (props: {
         <div className="flex justify-end w-full mt-2">
           <SubmitDialog
             handleModalConfirm={handleModalConfirm}
+            disabled={saving}
             description={`Team ${team1?.name} : Team ${team2?.name}`}
           />
         </div>

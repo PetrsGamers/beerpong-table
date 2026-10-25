@@ -10,11 +10,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export function SubmitDialog({ handleModalConfirm, description }: any) {
+export function SubmitDialog({
+  handleModalConfirm,
+  description,
+  disabled,
+}: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button className="btn btn-primary">Submit</button>
+        <button className="btn btn-primary" disabled={disabled}>
+          {disabled ? "Saving..." : "Submit"}
+        </button>
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader className="bg-white">
