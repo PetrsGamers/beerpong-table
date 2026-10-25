@@ -37,3 +37,13 @@ export const player_match_score = pgTable("player_match_score", {
   score: numeric("score"),
   blowjobs: numeric("blowjobs"),
 });
+
+// generated round-robin plan; played matches still live in `match`
+export const scheduled_match = pgTable("scheduled_match", {
+  id: serial("id").primaryKey(),
+  tournament_id: integer("tournament_id").references(() => tournament.id),
+  round: integer("round"),
+  table_number: integer("table_number"),
+  team1_id: integer("team1_id").references(() => team.id),
+  team2_id: integer("team2_id").references(() => team.id),
+});

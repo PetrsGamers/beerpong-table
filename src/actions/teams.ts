@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/db";
-import { match, player, team } from "@/db/schema";
-import { aliasedTable, eq } from "drizzle-orm";
+import { match, player, scheduled_match, team } from "@/db/schema";
+import { aliasedTable, eq, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 type Team = {
@@ -25,6 +25,12 @@ export async function loadAllTeams(id: number) {
 }
 
 export async function deleteTeam(id: number) {
+  // the team's slots in a generated schedule would block the delete
+  await db
+    .delete(scheduled_match)
+    .where(
+      or(eq(scheduled_match.team1_id, id), eq(scheduled_match.team2_id, id))
+    );
   const result = await db.delete(team).where(eq(team.id, id));
   revalidatePath(`/${id}`);
 }

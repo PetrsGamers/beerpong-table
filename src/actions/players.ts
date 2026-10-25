@@ -23,27 +23,6 @@ export const getPlayersForTeamId = async (teamId: number) => {
   return { player1: first[0].player, player2: second[0].player };
 };
 
-export const addPlayerScoreAndBJ = async (
-  playerId: number,
-  score: number,
-  BJ: number
-) => {
-  console.log("addPlayerScoreAndBJ", playerId, score, BJ);
-  const pl = await getPlayerById(playerId);
-  if (!pl) {
-    throw new Error("Player not found");
-  }
-
-  let newScore = pl.score ? Number(pl.score!) + score : score;
-  let newBJ = pl.blowjobs ? Number(pl.blowjobs!) + BJ : BJ;
-
-  await db
-    .update(player)
-    .set({ score: newScore.toString(), blowjobs: newBJ.toString() })
-    .where(eq(player.id, playerId));
-
-  return;
-};
 export const getPlayersForTournamentId = async (tournamentId: number) => {
   const teams = await db
     .select()
